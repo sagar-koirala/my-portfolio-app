@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Mercer | Hardware & Embedded Systems Engineer Portfolio",
+  title: "sagar-koirala-portfolio",
   description:
-    "Portfolio of Alex Mercer, a professional Hardware & Embedded Systems Engineer. Specializing in high-speed PCB design, firmware development, RTOS, IoT architectures, and premium embedded solutions.",
+    "Portfolio of Sagar koirala, a professional Hardware & Embedded Systems Engineer. Specializing in high-speed PCB design, firmware development, RTOS, IoT architectures, and end-end embedded solutions.",
   keywords: [
     "Hardware Engineer",
     "Embedded Systems",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "Microcontrollers",
     "IoT Architecture",
   ],
-  authors: [{ name: "Alex Mercer" }],
+  authors: [{ name: "Sagar Koirala" }],
 };
 
 export default function RootLayout({
