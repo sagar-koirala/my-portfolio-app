@@ -1,47 +1,142 @@
 {
   "profile": {
-    "name": "Template Holder",
-    "title": "Systems Discipline Placeholder",
-    "location": "City, Country",
-    "coordinates": "00.0000° N, 00.0000° E",
-    "skillsOverview": ["Pill A", "Pill B", "Pill C"]
+    "name": "Sagar Koirala",
+    "title": "Embedded Systems & Firmware Design Engineer",
+    "location": "Bangkok, Thailand",
+    "coordinates": "13.7563° N, 100.5018° E",
+    "overview": "Designing robust, low-latency, and high-integrity hardware architectures and embedded software solutions from concept to production.",
+    "skillsOverview": ["C/C++", "FreeRTOS", "STM32", "Altium Designer", "CAN Bus", "IoT"]
   },
   "philosophy": [
-    {"title": "Core Philosophy 1", "subtitle": "Sub Alpha", "description": "Placeholder info text description block."}
+    {
+      "category": "PHYSICAL FIRST PRINCIPLES",
+      "title": "SIGNAL INTEGRITY AT THE TRACE LEVEL",
+      "description": "Silicon behavior changes outside the pristine lab environment. I design multi-layer PCB stack-ups and optimize high-speed hardware paths specifically to isolate signal corruption and transmission hazards before they reach the execution loop."
+    },
+    {
+      "category": "EMPIRICAL SYSTEM RIGOR",
+      "title": "STABILITY THROUGH EDGE STRESS TESTING",
+      "description": "System reliability cannot be proved in a vacuum. From tracing unstable power rails to mapping task routines in RTOS environments, every component layer must survive aggressive hardware bring-up, signal probing, and exhaustive logic-analyzer verification."
+    },
+    {
+      "category": "CROSS-DISCIPLINE LOGIC",
+      "title": "BRIDGING HARDWARE WITH FIRMWARE LAYER",
+      "description": "System integration slows down when engineering disciplines live in isolation. I actively bridge the gap between schematic board designs and low-level code architecture, developing custom device drivers and testing scripts to keep deployment cycles moving."
+    }
   ],
   "projectsMeta": [
     {
-      "id": "project-hardware-stub",
-      "title": "Hardware Style Build Name",
-      "summary": "Brief card summary layout text.",
+      "id": "project-atlas-telemetry",
+      "title": "Atlas Telemetry Unit & CANbridge",
+      "summary": "4-layer automotive STM32 telemetry system streaming real-time vehicle data over LTE and USB CDC.",
       "folderSlug": "hardware-build",
-      "tags": ["Altium", "PCB"]
+      "tags": ["STM32", "Altium", "FreeRTOS", "CAN"]
     },
     {
-      "id": "project-software-stub",
-      "title": "Firmware/Library Style Build Name",
-      "summary": "Brief card summary layout text.",
+      "id": "project-tello-esp32",
+      "title": "TelloESP32 Open-Source Library",
+      "summary": "Production-ready C++ Arduino library for UDP flight control and H.264 video streaming from dual-core ESP32.",
       "folderSlug": "firmware-library",
-      "tags": ["C++", "RTOS"]
+      "tags": ["C++", "ESP32", "UDP", "RTOS"]
     }
   ],
   "timeline": [
-    {"id": "t1", "dateRange": "YYYY - YYYY", "role": "Role Name", "company": "Organization Name", "bullets": ["Metric achievement summary item text."]}
+    {
+      "id": "t1",
+      "dateRange": "2021 - 2022",
+      "role": "Satellite Research Fellow",
+      "company": "Space Foundation Nepal",
+      "bullets": [
+        "Operated UHF/VHF ground station for BIRDS-3 CubeSat missions.",
+        "Developed LoRa-based telemetry terminals for Himalayan glacial lake monitoring."
+      ]
+    },
+    {
+      "id": "t2",
+      "dateRange": "2023 - 2024",
+      "role": "Research Assistant - ADCS",
+      "company": "Int. Institute of Space Technology",
+      "bullets": [
+        "Designed fault-tolerant STM32 secondary bootloader using custom CAN protocol.",
+        "Built reaction wheel driver and Altium PCB for Magnetic Torquer test rig."
+      ]
+    },
+    {
+      "id": "t3",
+      "dateRange": "2025",
+      "role": "Embedded Systems Intern",
+      "company": "D.T.C. Enterprise",
+      "bullets": [
+        "Developed CANsense C++/Qt tool for real-time CAN bus telemetry and reverse engineering.",
+        "Reduced vehicle signal decoding time by 70% for field engineers."
+      ]
+    }
   ],
   "skillsInventory": {
-    "Category Alpha": ["Tool 1", "Tool 2"],
-    "Category Beta": ["Protocol 1", "Protocol 2"]
+    "Hardware Engineering": [
+      "Altium Designer (4-Layer / HDI)",
+      "KiCad Layout",
+      "Schematic Capture",
+      "Power Trees (Buck / LDO / Mux)",
+      "Impedance Control (50/90Ω)",
+      "DFM & BOM Optimization"
+    ],
+    "Firmware & RTOS": [
+      "C/C++ Bare-Metal",
+      "FreeRTOS",
+      "STM32 HAL / CubeIDE",
+      "ESP32 / ESP-IDF",
+      "Arduino Library",
+      "Bootloader & OTA Design"
+    ],
+    "Communication Protocols": [
+      "CAN Bus / CAN CDC",
+      "UART / SPI / I2C / USB 2.0",
+      "LTE / Cellular IoT (SIM7600)",
+      "GNSS & GPS",
+      "UDP / TCP / MQTT",
+      "JTAG / SWD / Oscilloscopes"
+    ],
+    "Software & Systems Integration": [
+      "ROS2 Systems",
+      "Denavit-Hartenberg Kinematics",
+      "CoppeliaSim Robotics Model",
+      "PID Control Loops",
+      "SolidWorks & Fusion 360",
+      "3D Printing & Prototyping"
+    ]
   },
   "testimonials": [
-    {"client": "Client Identifier A", "platform": "Platform Indicator", "rating": 5.0, "text": "Review quote block placeholder details."}
+    {
+      "title": "Embedded UI & Firmware Delivery",
+      "platform": "Upwork Client",
+      "rating": 5.0,
+      "text": "Sagar was extremely professional, knowledgeable and communicative. He finished my project in due time and went above and beyond. I highly recommend him for your electronic programming needs!"
+    },
+    {
+      "title": "Drone Telemetry Integration",
+      "platform": "Upwork Client",
+      "rating": 5.0,
+      "text": "The freelancer consistently completed tasks on time with excellent results. Outstanding skills, extensive experience, and exceptional support—highly recommended!"
+    }
   ],
   "trustMetrics": [
-    {"value": "100%", "label": "Upwork Job Success"},
-    {"value": "5.0 / 5.0", "label": "Client Rating"}
+    {
+      "value": "100%",
+      "label": "Upwork Job Success"
+    },
+    {
+      "value": "5.0 / 5.0",
+      "label": "Client Rating"
+    }
   ],
   "footer": {
-    "ctaText": "Call to action template text prompt.",
-    "email": "hello@example.com",
-    "socials": {"github": "#", "linkedin": "#"}
+    "ctaText": "Let's talk architecture.",
+    "email": "koiralasamir633@gmail.com",
+    "socials": {
+      "github": "https://github.com/sagar-koirala",
+      "linkedin": "https://www.linkedin.com/in/sgr633/",
+      "upwork": "https://www.upwork.com/freelancers/~0123a2955312258964?mp_source=share"
+    }
   }
 }
