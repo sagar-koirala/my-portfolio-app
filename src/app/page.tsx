@@ -1,12 +1,22 @@
 import React from "react";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
+import SkillsBOM from "@/components/SkillsBOM";
+import Testimonials from "@/components/Testimonials";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="px-4 sm:px-8 max-w-7xl mx-auto space-y-24 py-12">
-      <Hero />
-      <Philosophy />
+    <main className="px-4 sm:px-8 max-w-7xl mx-auto py-12">
+      <div className="space-y-24">
+        <Hero />
+        <Philosophy />
+        <SkillsBOM />
+        <Testimonials />
+      </div>
+      <div className="mt-8">
+        <Footer />
+      </div>
     </main>
   );
 }
