@@ -131,12 +131,19 @@
     }
   ],
   "footer": {
-    "ctaText": "Let's talk architecture.",
+    "ctaText": "AVAILABLE FOR GLOBAL ENGINEERING ENGAGEMENTS.",
     "email": "koiralasamir633@gmail.com",
+    "phone": "(+66) 096 228 6084",
     "socials": {
       "github": "https://github.com/sagar-koirala",
       "linkedin": "https://www.linkedin.com/in/sgr633/",
       "upwork": "https://www.upwork.com/freelancers/~0123a2955312258964?mp_source=share"
+    },
+    "logistics": {
+      "location": "Bangkok, Thailand",
+      "nationality": "Nepalese",
+      "preference": "Local (Thailand) or Global Relocation",
+      "visaStatus": "ED Visa Holder; Clear for Work Permit Transition"
     }
   }
 }
