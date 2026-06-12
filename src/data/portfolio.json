@@ -35,6 +35,10 @@
   "testimonials": [
     {"client": "Client Identifier A", "platform": "Platform Indicator", "rating": 5.0, "text": "Review quote block placeholder details."}
   ],
+  "trustMetrics": [
+    {"value": "100%", "label": "Upwork Job Success"},
+    {"value": "5.0 / 5.0", "label": "Client Rating"}
+  ],
   "footer": {
     "ctaText": "Call to action template text prompt.",
     "email": "hello@example.com",
