@@ -42,33 +42,124 @@
   ],
   "timeline": [
     {
-      "id": "t1",
-      "dateRange": "2021 - 2022",
+      "id": "apn",
+      "dateRange": "Mar. 2021 - Jun. 2022",
+      "yearStart": 2021.17,
+      "yearEnd": 2022.42,
+      "lane": 1,
       "role": "Satellite Research Fellow",
-      "company": "Space Foundation Nepal",
+      "type": "Full-Time",
+      "company": "Antarikchya Pratisthan Nepal (Space Foundation Nepal)",
+      "shortCompany": "APN",
+      "location": "Kathmandu, Nepal",
+      "website": "https://antarikchya.org.np/",
+      "referencePersonEmail": "abhas@antarikchya.org.np",
+      "logo": "/companylogos/antarikchya.png",
       "bullets": [
         "Operated UHF/VHF ground station for BIRDS-3 CubeSat missions.",
-        "Developed LoRa-based telemetry terminals for Himalayan glacial lake monitoring."
+        "Developed LoRa-based ground sensor terminals for glacial lake monitoring, researching satellite-relayed (store-and-forward) telemetry via BIRDS-3 CubeSat; optimized RF link budgets, designed high-gain directional antennas, and integrated GSM telemetry fallbacks for rugged field deployment.",
+        "Publications: International Astronautical Federation : 9/21/2022 [https://iafastro.directory/iac/paper/id/72181/ext/appendix/IAC-22,E5,4,8,x72181.pdf] Satellite Ground Sensor Terminal Design: Use of LoRa to Transmit Remote Sensor Data from Nepal’s Himalayan Region for Disaster Mitigation"
       ]
     },
     {
-      "id": "t2",
-      "dateRange": "2023 - 2024",
-      "role": "Research Assistant - ADCS",
-      "company": "Int. Institute of Space Technology",
+      "id": "kmutnb",
+      "dateRange": "Jul. 2022 - Apr. 2026",
+      "yearStart": 2022.58,
+      "yearEnd": 2026.25,
+      "lane": 0,
+      "role": "Bachelor of Engineering — Robotics and Automation Systems",
+      "company": "King Mongkut's University of Technology North Bangkok (KMUTNB)",
+      "shortCompany": "KMUTNB",
+      "location": "Bangkok, Thailand",
+      "website": "https://www.kmutnb.ac.th",
+      "referencePersonEmail": "",
+      "logo": "/companylogos/kmutnb.png",
       "bullets": [
-        "Designed fault-tolerant STM32 secondary bootloader using custom CAN protocol.",
-        "Built reaction wheel driver and Altium PCB for Magnetic Torquer test rig."
+        "GPA: 3.83 / 4.0 — First Class Honours.",
+        "TOEIC: 950 / 990.",
+        "Sakura Science Program (Japan): Won 1st prize in a cross-cultural engineering competition."
+      ],
+      "type": "Education"
+    },
+    {
+      "id": "insted",
+      "dateRange": "Feb. 2023 - Aug. 2024",
+      "yearStart": 2023.12,
+      "yearEnd": 2024.66,
+      "lane": 1,
+      "role": "Research Assistant (CubeSat ADCS System)",
+      "type": "Part-Time",
+      "company": "International Institute of Space Technology for Economic Development",
+      "shortCompany": "INSTED",
+      "location": "Bangkok, Thailand",
+      "website": "https://www.technopark.kmutnb.ac.th/department/2",
+      "referencePersonEmail": "phongsatorn.s@eng.kmutnb.ac.th",
+      "logo": "/companylogos/insted.png",
+      "bullets": [
+        "**Bootloader & OTA**: Designed a fault-tolerant Secondary Bootloader (IAP) for STM32 with a custom CAN protocol, Flash memory protection, and CRC verification for reliable over-the-air firmware updates.",
+        "**Firmware Design**: Developed a custom driver for a STspin3201 based Reaction wheel controller for CubeSats ADCS system.",
+        "**Board Bring-up**: STM32F1 based PCB design using Altium designer, for a custom Magnetic Torquer Testing rig, which included integration of Magnetometer (measuring the output magnetic field strength), current sensors, and motor drivers.",
+        "**Test Tooling**: Built a Python/Tkinter GUI (MTQ-Tester) for Magnetic Torquer hardware testing — multi-threaded real-time serial data visualization and live plotting.",
+        "Designed electronics hardware and software for a Sun-sensor calibration platform, a rotating platform with 2 degrees of freedom moving on azimuth and elevation axis. The system was driven by two stepper motors and was controlled by STM32F103 MCU with A4988 driver. Magnetic hall sensor was added for rotors feedback."
       ]
     },
     {
-      "id": "t3",
-      "dateRange": "2025",
-      "role": "Embedded Systems Intern",
-      "company": "D.T.C. Enterprise",
+      "id": "upwork",
+      "dateRange": "Nov. 2024 - Aug. 2025",
+      "yearStart": 2024.87,
+      "yearEnd": 2025.66,
+      "lane": 2,
+      "role": "Freelance Embedded Engineer",
+      "type": "Freelance",
+      "company": "Upwork",
+      "shortCompany": "UPWORK",
+      "location": "Remote (Global)",
+      "website": "https://www.upwork.com/freelancers/~0123a2955312258964?mp_source=share",
+      "referencePersonEmail": "",
+      "logo": "/companylogos/icons8-upwork-250.svg",
       "bullets": [
-        "Developed CANsense C++/Qt tool for real-time CAN bus telemetry and reverse engineering.",
-        "Reduced vehicle signal decoding time by 70% for field engineers."
+        "**100% Job Success Score** with 5-star ratings across all engagements.",
+        "Designed and delivered complex firmware, IoT, and embedded hardware architectures.",
+        "*Note: Detailed technical implementations for freelance engagements are cataloged in Section 4 below (see: Drone Telemetry, TelloESP32, and Narvar IoT).*"
+      ]
+    },
+    {
+      "id": "dtc",
+      "dateRange": "Apr. 2025 - Jun. 2025",
+      "yearStart": 2025.29,
+      "yearEnd": 2025.46,
+      "lane": 1,
+      "role": "Embedded Systems Developer",
+      "type": "Internship",
+      "company": "D.T.C. Enterprise Public Company Limited",
+      "shortCompany": "DTC",
+      "location": "Bangkok, Thailand",
+      "website": "https://dtc.co.th/",
+      "referencePersonEmail": "patchara@dtc.co.th",
+      "logo": "/companylogos/DTC_logo.svg",
+      "bullets": [
+        "Developed CANsense — a C++/Qt tool for CAN bus analysis and reverse engineering: automated the manual process of recording CAN logs during drives and analyzing them in Excel by writing STM32 firmware for live capture and implementing real-time pattern-based highlighting to map changing signal IDs.",
+        "Modular software architecture with CLI backend and GUI frontend; **reduced vehicle signal decoding time by 70%**"
+      ]
+    },
+    {
+      "id": "icsn",
+      "dateRange": "Feb. 2026 - Apr. 2026",
+      "yearStart": 2026.12,
+      "yearEnd": 2026.29,
+      "lane": 1,
+      "role": "Robotics Technical Facilitator",
+      "type": "Part-Time",
+      "company": "International Christian School Nonthaburi",
+      "shortCompany": "ICSN",
+      "location": "Bangkok, Thailand",
+      "website": "https://icsn.ac.th",
+      "referencePersonEmail": "mark.plaza@icsn.ac.th",
+      "logo": "/companylogos/ICSNLogo.png",
+      "bullets": [
+        "Mentored primary and secondary school students in building, programming, and troubleshooting VEX IQ and V5 robotics kits.",
+        "Developed and delivered a comprehensive learning session on PID (Proportional-Integral-Derivative) control systems for the school's technology faculty and students.",
+        "Earned official certifications as a VEX IQ Scorekeeper and Head Referee."
       ]
     }
   ],
