@@ -24,3 +24,113 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* --- Timeline Physics Styling --- */
+.physics-viewport {
+  position: relative;
+  width: 100%;
+  height: 680px;
+  overflow: hidden;
+  background: #050506;
+  border: 1px solid #141416;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.physics-viewport:active {
+  cursor: grabbing;
+}
+
+.physics-workspace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+#timeline-axis {
+  position: absolute;
+  top: 500px; /* workspaceHeight / 2 */
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.02);
+  transition: background 0.3s, height 0.3s;
+}
+
+#timeline-axis.active {
+  background: rgba(200, 122, 83, 0.25);
+  height: 2px;
+}
+
+.year-marker {
+  position: absolute;
+  top: 500px;
+  font-family: var(--font-geist-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #a3a3a3;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  background: #050506;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transform-origin: center;
+}
+
+.month-marker {
+  position: absolute;
+  top: 500px;
+  font-family: var(--font-geist-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: #525252;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  background: #050506;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transform-origin: center;
+}
+
+/* --- Custom Scrollbar for TimelineDetails --- */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #e5e5e5 transparent;
+}
+
+.dark .custom-scrollbar {
+  scrollbar-color: #262626 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 9999px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #262626;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
