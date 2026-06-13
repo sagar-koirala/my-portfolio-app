@@ -8,6 +8,7 @@ import profilePic from "@/assets/profile.png";
 const navLinks = [
   { id: "hero", label: "About" },
   { id: "philosophy", label: "Approach" },
+  { id: "timeline", label: "Timeline" },
   { id: "projects", label: "Builds" },
   { id: "skills", label: "Expertise" },
   { id: "testimonials", label: "Reviews" },
@@ -63,8 +64,8 @@ export default function Navbar() {
       <motion.div
         initial={false}
         animate={{
-          width: isScrolled ? (isMobile ? "48px" : "420px") : "100%",
-          maxWidth: isScrolled ? (isMobile ? "48px" : "420px") : "1280px",
+          width: isScrolled ? (isMobile ? "48px" : "500px") : "100%",
+          maxWidth: isScrolled ? (isMobile ? "48px" : "500px") : "1280px",
           borderRadius: isScrolled ? "9999px" : "0px",
           y: isScrolled ? 8 : 0,
           paddingLeft: isScrolled ? (isMobile ? "0px" : "12px") : "16px",
