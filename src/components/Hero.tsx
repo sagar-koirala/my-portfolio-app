@@ -242,6 +242,7 @@ export default function Hero() {
                   src={profilePic}
                   alt="Base PCB Blueprint Layer"
                   fill
+                  sizes="(max-width: 768px) 288px, 360px"
                   className="object-cover opacity-70"
                   priority
                 />
@@ -265,6 +266,7 @@ export default function Hero() {
                     src={profilePic}
                     alt="Middle Solder Layer"
                     fill
+                    sizes="(max-width: 768px) 288px, 360px"
                     className="object-cover"
                     priority
                   />
@@ -289,6 +291,7 @@ export default function Hero() {
                     src={profilePic}
                     alt="Top Finished Assembly Layer"
                     fill
+                    sizes="(max-width: 768px) 288px, 360px"
                     className="object-cover"
                     priority
                   />

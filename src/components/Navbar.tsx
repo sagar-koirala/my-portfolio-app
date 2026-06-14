@@ -105,6 +105,7 @@ export default function Navbar() {
               src={profilePic}
               alt="Sagar Koirala Profile Icon"
               fill
+              sizes="32px"
               className="object-cover"
               priority
             />
