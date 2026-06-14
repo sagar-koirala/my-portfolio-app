@@ -436,6 +436,7 @@ export default function TimelineCanvas({
                 <motion.path
                   d={wire.pathLeft}
                   fill="none"
+                  strokeWidth={1.5}
                   animate={{
                     stroke: strokeColor,
                     strokeWidth: strokeWidth,
@@ -446,6 +447,7 @@ export default function TimelineCanvas({
                 <motion.path
                   d={wire.pathRight}
                   fill="none"
+                  strokeWidth={1.5}
                   animate={{
                     stroke: strokeColor,
                     strokeWidth: strokeWidth,
@@ -456,6 +458,7 @@ export default function TimelineCanvas({
                 <motion.circle
                   cx={wire.warpedLeftAnchor.x}
                   cy={wire.warpedLeftAnchor.y}
+                  r={3}
                   animate={{
                     r: (wire.isActive ? 4 : 3) * wire.warpedLeftAnchor.scale,
                     fill: circleColor,
@@ -465,6 +468,7 @@ export default function TimelineCanvas({
                 <motion.circle
                   cx={wire.warpedRightAnchor.x}
                   cy={wire.warpedRightAnchor.y}
+                  r={3}
                   animate={{
                     r: (wire.isActive ? 4 : 3) * wire.warpedRightAnchor.scale,
                     fill: circleColor,
