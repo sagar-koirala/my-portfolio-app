@@ -395,9 +395,25 @@ export default function TimelineCanvas({
         </div>
       )}
 
-      {/* SVG Connector Wires and Rail Layer */}
       {containerWidth > 0 && (
         <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+          <defs>
+            {connectionPaths.map((wire) => (
+              <linearGradient
+                key={`grad-${wire.id}`}
+                id={`grad-${wire.id}`}
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
+                {/* Starts from the matching color of the timeline rail and gradually reaches bright white */}
+                <stop offset="0%" stopColor="rgba(39, 39, 42, 0.8)" />
+                <stop offset="100%" stopColor="rgba(255, 255, 255, 1)" />
+              </linearGradient>
+            ))}
+          </defs>
+
           {/* Background Curved Timeline Rail (Track) */}
           <path
             d={getRailPath()}
@@ -433,45 +449,75 @@ export default function TimelineCanvas({
 
             return (
               <g key={`wire-${wire.id}`} className="transition-all duration-300" style={{ opacity: wire.warpedNode.opacity }}>
+                {/* Left Wire - Base Track */}
                 <motion.path
                   d={wire.pathLeft}
                   fill="none"
                   strokeWidth={1.5}
                   animate={{
-                    stroke: strokeColor,
-                    strokeWidth: strokeWidth,
+                    stroke: wire.isAnyActive ? "rgba(100, 100, 110, 0.25)" : "rgba(180, 180, 195, 0.7)",
+                    strokeWidth: 1.5,
                   }}
                   transition={springConfig}
                   strokeDasharray={dashArray}
                 />
+                {/* Left Wire - Active Gradient Overlay */}
+                <motion.path
+                  d={wire.pathLeft}
+                  fill="none"
+                  stroke={`url(#grad-${wire.id})`}
+                  strokeWidth={2.5}
+                  animate={{
+                    opacity: wire.isActive ? 1 : 0,
+                    strokeWidth: wire.isActive ? 2.5 : 1.5,
+                  }}
+                  transition={springConfig}
+                  strokeDasharray={dashArray}
+                />
+
+                {/* Right Wire - Base Track */}
                 <motion.path
                   d={wire.pathRight}
                   fill="none"
                   strokeWidth={1.5}
                   animate={{
-                    stroke: strokeColor,
-                    strokeWidth: strokeWidth,
+                    stroke: wire.isAnyActive ? "rgba(100, 100, 110, 0.25)" : "rgba(180, 180, 195, 0.7)",
+                    strokeWidth: 1.5,
                   }}
                   transition={springConfig}
                   strokeDasharray={dashArray}
                 />
+                {/* Right Wire - Active Gradient Overlay */}
+                <motion.path
+                  d={wire.pathRight}
+                  fill="none"
+                  stroke={`url(#grad-${wire.id})`}
+                  strokeWidth={2.5}
+                  animate={{
+                    opacity: wire.isActive ? 1 : 0,
+                    strokeWidth: wire.isActive ? 2.5 : 1.5,
+                  }}
+                  transition={springConfig}
+                  strokeDasharray={dashArray}
+                />
+
                 <motion.circle
                   cx={wire.warpedLeftAnchor.x}
                   cy={wire.warpedLeftAnchor.y}
-                  r={3}
+                  r={8}
                   animate={{
-                    r: (wire.isActive ? 4 : 3) * wire.warpedLeftAnchor.scale,
-                    fill: circleColor,
+                    r: (wire.isActive ? 9.5 : 8) * wire.warpedLeftAnchor.scale,
+                    fill: activeId ? "rgba(39, 39, 42, 0.8)" : "rgba(24, 24, 27, 0.6)",
                   }}
                   transition={springConfig}
                 />
                 <motion.circle
                   cx={wire.warpedRightAnchor.x}
                   cy={wire.warpedRightAnchor.y}
-                  r={3}
+                  r={8}
                   animate={{
-                    r: (wire.isActive ? 4 : 3) * wire.warpedRightAnchor.scale,
-                    fill: circleColor,
+                    r: (wire.isActive ? 9.5 : 8) * wire.warpedRightAnchor.scale,
+                    fill: activeId ? "rgba(39, 39, 42, 0.8)" : "rgba(24, 24, 27, 0.6)",
                   }}
                   transition={springConfig}
                 />

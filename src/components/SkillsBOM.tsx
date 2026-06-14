@@ -64,7 +64,7 @@ export default function SkillsBOM() {
             >
               {/* Row Header */}
               <div className="flex items-center justify-between select-none">
-                <h3 className="text-xl md:text-3xl font-medium text-neutral-900 dark:text-white uppercase tracking-tight">
+                <h3 className="text-xl md:text-3xl font-medium text-neutral-900 dark:text-white uppercase tracking-tight font-sans">
                   {category}
                 </h3>
                 <span className="text-sm font-mono text-neutral-400 dark:text-neutral-500 transition-transform duration-300">

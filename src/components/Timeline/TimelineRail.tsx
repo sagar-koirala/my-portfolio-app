@@ -118,16 +118,18 @@ export default function TimelineRail() {
   }, [parsedExperiences, activeExperienceId, clampCenterYear]);
 
   // Selection callback to snap viewport to the targeted experience
-  const handleSelectId = useCallback((id: string) => {
+  const handleSelectId = useCallback((id: string | null) => {
     setShouldAnimate(true);
     setActiveExperienceId(id);
-    const exp = parsedExperiences.find(e => e.id === id);
-    if (exp) {
-      const [targetMin, targetMax] = getDynamicTargetRange(exp.yearStart, exp.yearEnd);
-      const targetDuration = targetMax - targetMin;
-      const targetCenter = (targetMin + targetMax) / 2;
-      setViewportCenterYear(clampCenterYear(targetCenter, targetDuration));
-      setZoomDuration(targetDuration);
+    if (id) {
+      const exp = parsedExperiences.find(e => e.id === id);
+      if (exp) {
+        const [targetMin, targetMax] = getDynamicTargetRange(exp.yearStart, exp.yearEnd);
+        const targetDuration = targetMax - targetMin;
+        const targetCenter = (targetMin + targetMax) / 2;
+        setViewportCenterYear(clampCenterYear(targetCenter, targetDuration));
+        setZoomDuration(targetDuration);
+      }
     }
   }, [parsedExperiences, clampCenterYear]);
 
