@@ -1,0 +1,17 @@
+{
+  "priority": "standard",
+  "title": "M5Stack Core2 HDI Reverse Engineering",
+  "tagline": "High-density interconnect (HDI) PCB reverse engineering and mixed-signal partition study in Altium Designer.",
+  "role": "Hardware Design Engineer",
+  "publishedDate": "January 2025",
+  "specs": [
+    { "label": "Board Type", "value": "Multi-layer HDI (Blind & Buried Vias)" },
+    { "label": "Target Board", "value": "M5Stack Core2 Mainboard" },
+    { "label": "CAD Suite", "value": "Altium Designer" },
+    { "label": "Focus Area", "value": "Power Distribution Network (PDN)" }
+  ],
+  "techStack": ["Altium Designer", "HDI PCB Layout", "Mixed-Signal Partitioning", "PDN Design", "Hardware Reverse-Engineering"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/M5Stack-CORE2-PCB-RE"
+  }
+}

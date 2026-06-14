@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# compiled projects index and copied media assets
+/src/data/projects.ts
+/public/projects/

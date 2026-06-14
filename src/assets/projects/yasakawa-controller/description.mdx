@@ -1,0 +1,7 @@
+### Industrial Manipulator Kinematics & Simulation
+Developed a Python-based custom control and simulation interface for the Yaskawa GP8 6-DOF industrial robot arm. The program communicates with a virtual simulator in real-time to solve joint positions and path trajectories dynamically.
+
+### Kinematics Engine & GUI Console
+* **Mathematical Solvers:** Implemented forward kinematics using Denavit-Hartenberg (DH) parameters, and designed an inverse kinematics engine leveraging SciPy optimization libraries to compute joint configurations.
+* **CoppeliaSim Simulation Link:** Established a remote API websocket link to CoppeliaSim, syncing simulated joint angles, velocities, and end-effector paths with the control algorithms.
+* **Multi-threaded Operator GUI:** Built a custom Tkinter-based control dashboard featuring interactive coordinate sliders, allowing operators to visualize coordinate changes and detect kinematic singularities in real-time without freezing application loops.

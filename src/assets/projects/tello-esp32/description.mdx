@@ -1,0 +1,7 @@
+### UDP Packet & Streaming Engine
+A production-grade C++ Arduino library developed to interface with Ryze Tello drones. It implements two separate UDP sockets pinned to specific ESP32 CPU cores:
+* **Core 0 (Control Task):** Manages command execution queues, keeps connection alive via cyclic watchdog pings, and processes incoming flight telemetry state parameters.
+* **Core 1 (Video Stream Receiver):** Listens to RTP video packets and parses raw H.264 NAL units on-the-fly.
+
+### Real-Time FreeRTOS Optimization
+By isolating the network tasks and the high-throughput video stream receiver onto separate ESP32 hardware cores, the library avoids critical flight timing hazards. Built-in packet reassembly ensures stable H.264 frame construction even in noisy RF environments.

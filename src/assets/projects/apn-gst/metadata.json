@@ -1,0 +1,17 @@
+{
+  "priority": "standard",
+  "title": "Himalayan LoRa Ground Sensor Terminal",
+  "tagline": "Glacial lake monitoring station with LoRa-to-satellite store-and-forward telemetry and GSM fallback.",
+  "role": "Satellite Research Fellow",
+  "publishedDate": "June 2022",
+  "specs": [
+    { "label": "Ground Station", "value": "UHF/VHF (BIRDS-3 CubeSat)" },
+    { "label": "Transceiver", "value": "LoRa (433/868 MHz) + GSM" },
+    { "label": "Enclosure", "value": "IP67 Weatherproof" },
+    { "label": "Research Scope", "value": "Himalayan Glacial Telemetry" }
+  ],
+  "techStack": ["LoRa", "RF Link Budget", "GSM Telemetry", "Antenna Design", "Embedded C"],
+  "links": {
+    "github": "https://github.com/sagar-koirala"
+  }
+}

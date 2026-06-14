@@ -1,0 +1,17 @@
+{
+  "priority": "standard",
+  "title": "Narvar Smart Phone Stand & IoT Controller",
+  "tagline": "ESP32-based desktop IoT controller with custom LVGL interface, WiFi/MQTT automation, and iOS location tracking.",
+  "role": "IoT & Firmware Systems Consultant",
+  "publishedDate": "January 2025",
+  "specs": [
+    { "label": "MCU Platform", "value": "M5Stack CoreS3 (ESP32-S3 Dual-Core)" },
+    { "label": "Graphics Library", "value": "LVGL (C-based Interface)" },
+    { "label": "IoT Broker", "value": "Adafruit IO (MQTT over TLS)" },
+    { "label": "Smart Home", "value": "iOS Shortcuts & IFTTT Webhooks" }
+  ],
+  "techStack": ["ESP32", "LVGL", "MQTT", "Adafruit IO", "iOS Shortcuts", "IFTTT"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/Narvar_PhoneHolder_M5stackS3"
+  }
+}

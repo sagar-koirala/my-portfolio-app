@@ -1,0 +1,18 @@
+{
+  "slug": "tello-esp32",
+  "priority": "standard",
+  "title": "TelloESP32 Arduino Library",
+  "tagline": "Production-ready C++ library for UDP flight control and H.264 video streaming from dual-core ESP32.",
+  "role": "Open-source Library Architect",
+  "publishedDate": "March 2025",
+  "specs": [
+    { "label": "MCU", "value": "ESP32-D0WDQ6 (Dual-Core)" },
+    { "label": "PROTOCOL", "value": "UDP Packets (Command/State/Video)" },
+    { "label": "DECODING", "value": "RTP H.264 Video stream parsing" },
+    { "label": "RTOS ENVIRONMENT", "value": "FreeRTOS Tasks (Core-pinned)" }
+  ],
+  "techStack": ["C++", "ESP32", "UDP Network", "H.264", "FreeRTOS", "Arduino Core"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/TelloESP32"
+  }
+}

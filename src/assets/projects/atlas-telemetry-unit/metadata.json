@@ -1,0 +1,20 @@
+{
+  "slug": "atlas-telemetry-unit",
+  "priority": "flagship",
+  "title": "Atlas Telemetry Unit & CANbridge",
+  "tagline": "Automotive-grade STM32 telemetry system streaming real-time vehicle diagnostics over LTE and USB CDC.",
+  "role": "Lead Hardware & Embedded Systems Engineer",
+  "publishedDate": "June 2025",
+  "specs": [
+    { "label": "MCU", "value": "STM32L476RGT6 (ARM Cortex-M4)" },
+    { "label": "LTE MODEM", "value": "SIM7600G-H (LTE Cat 4 & GNSS)" },
+    { "label": "INTERFACE", "value": "CAN 2.0B / USB 2.0 / MicroSD" },
+    { "label": "BOARD LAYOUT", "value": "4-Layer FR-4 (50Ω Impedance Controlled)" },
+    { "label": "POWER TREE", "value": "4V-14V input, 3.8V Buck, 3.3V LDO" }
+  ],
+  "techStack": ["STM32", "Altium Designer", "FreeRTOS", "CAN Bus", "LTE-CAT4", "C/C++"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/atlas-telemetry-unit",
+    "workspace": "https://github.com/sagar-koirala/atlas-telemetry-unit"
+  }
+}

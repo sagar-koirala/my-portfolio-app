@@ -62,7 +62,16 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full flex justify-end md:justify-center py-2 px-4 md:px-0 pointer-events-none select-none">
       <motion.div
-        initial={false}
+        initial={{
+          width: "100%",
+          maxWidth: "1280px",
+          borderRadius: "0px",
+          y: 0,
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          backgroundColor: "rgba(10, 10, 10, 0.3)",
+          borderColor: "rgba(255, 255, 255, 0.05)",
+        }}
         animate={{
           width: isScrolled ? (isMobile ? "48px" : "500px") : "100%",
           maxWidth: isScrolled ? (isMobile ? "48px" : "500px") : "1280px",
@@ -86,7 +95,12 @@ export default function Navbar() {
       >
         {/* Left Side: Profile Icon & Name / Status */}
         <motion.div
-          initial={false}
+          initial={{
+            width: 180,
+            opacity: 1,
+            scale: 1,
+            marginRight: 16,
+          }}
           animate={{
             width: isScrolled ? 0 : 180,
             opacity: isScrolled ? 0 : 1,

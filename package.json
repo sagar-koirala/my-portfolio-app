@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/compile-projects.js",
+    "prebuild": "node scripts/compile-projects.js",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

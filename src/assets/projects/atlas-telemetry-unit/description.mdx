@@ -1,0 +1,13 @@
+### Hardware System Architecture
+The **Atlas Tracking Unit (ATU)** is a custom-engineered PCB designed to interface directly with a vehicle's CAN bus network, process data via an on-board STM32 MCU, and stream real-time metrics over cellular LTE networks. It was designed from first principles using Altium Designer and includes high-speed differential signal routing for USB and RF trace impedance control.
+
+### Key Technical Specs
+* **Impedance Matching:** 50Ω single-ended impedance control for RF traces (LTE MAIN, LTE AUX, GNSS) using JLC04161H-7628 stack-up calculations.
+* **Transient Voltage Protection:** Board features a robust power tree designed to handle 12V automotive load dumps. Includes reverse polarity protection via P-channel MOSFET (`FDD6637`) and TVS diodes (`SMCJ14A`).
+* **Active Power Paths:** Dual-input power routing using a `TPS2121RUXR` power multiplexer to seamlessly select between vehicle DC IN and bench debug USB-C power without dropping execution.
+
+### Firmware Layer & RTOS Design
+Firmware is built bare-metal in C++ utilising FreeRTOS. Tasks are strictly segregated by priority:
+1. **High-priority CAN Parsing:** Triggers on hardware interrupts, extracting frames from the CAN controller mailbox and enqueuing them into a thread-safe ring buffer.
+2. **Medium-priority Telemetry Streamer:** Packs telemetry into binary frames and sends them over LTE using AT commands via cellular UART.
+3. **Low-priority Logger:** Periodically flushes buffered frames to local MicroSD card storage using SPI/FatFS.

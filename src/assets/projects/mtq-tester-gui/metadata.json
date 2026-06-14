@@ -1,0 +1,18 @@
+{
+  "slug": "mtq-tester",
+  "priority": "standard",
+  "title": "CubeSat ADCS Test Rig & Reaction Wheel",
+  "tagline": "High-precision magnetic torquer testing rig and STspin3201-based reaction wheel controller for CubeSats.",
+  "role": "Research Assistant (Satellites & ADCS)",
+  "publishedDate": "August 2024",
+  "specs": [
+    { "label": "MCU", "value": "STM32F103 (ADCS Control)" },
+    { "label": "MOTOR DRIVER", "value": "STspin3201 & A4988 Stepper" },
+    { "label": "CALIBRATION", "value": "2-DoF Azimuth-Elevation Platform" },
+    { "label": "TEST GUI", "value": "Python / Tkinter (Real-time serial plotting)" }
+  ],
+  "techStack": ["STM32", "Altium Designer", "C/C++", "Python", "Motor Control", "Tkinter"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/mtq-tester"
+  }
+}

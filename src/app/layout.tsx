@@ -40,6 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-neutral-950 text-neutral-100 font-sans selection:bg-neutral-800 selection:text-white">
@@ -52,7 +53,7 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "x660zo3xmx");
           `}
         </Script>
-        <div className="relative flex flex-col flex-grow">
+        <div className="relative flex flex-col flex-grow w-full min-w-0">
           <Navbar />
           {children}
         </div>

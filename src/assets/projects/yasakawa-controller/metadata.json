@@ -1,0 +1,17 @@
+{
+  "priority": "standard",
+  "title": "Yaskawa GP8 Robot Arm Controller",
+  "tagline": "6-DOF industrial manipulator control system with custom kinematics solver and CoppeliaSim simulation.",
+  "role": "Robotics Software Developer",
+  "publishedDate": "December 2024",
+  "specs": [
+    { "label": "Target Robot", "value": "Yaskawa GP8 (6-DOF Manipulator)" },
+    { "label": "Kinematics", "value": "DH Parameters (FK) + SciPy (IK)" },
+    { "label": "Simulation API", "value": "CoppeliaSim Remote API (Python)" },
+    { "label": "User Console", "value": "Tkinter Multi-threaded GUI" }
+  ],
+  "techStack": ["Python", "Robotics Kinematics", "SciPy", "CoppeliaSim", "Tkinter", "DH Parameters"],
+  "links": {
+    "github": "https://github.com/sagar-koirala/YaskawaGP8_Controller"
+  }
+}

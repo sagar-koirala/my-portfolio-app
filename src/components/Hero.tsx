@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import portfolio from "@/data/portfolio.json";
@@ -73,7 +73,7 @@ export default function Hero() {
         <div className="flex flex-col space-y-3">
           {/* Aligned, Prominent Intro Header */}
           <p className="text-xl md:text-2xl font-bold uppercase tracking-tighter text-neutral-500 dark:text-neutral-400 font-sans leading-none">
-            Hi, I'm
+            Hi, I&apos;m
           </p>
           {/* Main name display header (massive, uppercase, tracking-tight) */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black font-sans uppercase tracking-tighter text-neutral-900 dark:text-white leading-none">
@@ -100,7 +100,8 @@ export default function Hero() {
             View System Builds
           </a>
           <a
-            href="#footer"
+            href="/Sagar_Resume.pdf"
+            download="Sagar_Resume.pdf"
             className="px-6 py-3 rounded-none border border-neutral-200 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white text-neutral-800 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-mono text-xs uppercase tracking-wider font-semibold transition-colors duration-200"
           >
             Download CV

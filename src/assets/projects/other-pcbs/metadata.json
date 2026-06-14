@@ -1,0 +1,17 @@
+{
+  "priority": "standard",
+  "title": "Custom PCB Engineering & Bring-up",
+  "tagline": "A portfolio of custom multi-layer circuit boards designed for specialized industrial and medical control applications.",
+  "role": "PCB Layout Engineer",
+  "publishedDate": "Ongoing",
+  "specs": [
+    { "label": "Design Tools", "value": "Altium Designer & KiCad" },
+    { "label": "PCB Form Factors", "value": "Custom shapes & micro-sizes" },
+    { "label": "Power Tree Design", "value": "Buck / LDO Regulators" },
+    { "label": "Signal Integrity", "value": "Impedance Control & GND Planes" }
+  ],
+  "techStack": ["Altium Designer", "KiCad", "Schematic Capture", "Board Bring-up", "Power Trees"],
+  "links": {
+    "github": "https://github.com/sagar-koirala"
+  }
+}
