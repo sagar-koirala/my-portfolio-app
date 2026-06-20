@@ -10,6 +10,7 @@
     { "label": "Product Design", "value": "Thermal Flask, Extruder Holder" },
     { "label": "Manufacturing", "value": "3D Printing (PLA / PETG)" }
   ],
+  "categories": ["CAD"],
   "techStack": ["SolidWorks", "Fusion 360", "3D Printing", "Parametric Modeling", "Rapid Prototyping"],
   "links": {
     "github": "https://github.com/sagar-koirala"

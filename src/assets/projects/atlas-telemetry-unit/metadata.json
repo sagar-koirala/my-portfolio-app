@@ -12,6 +12,7 @@
     { "label": "BOARD LAYOUT", "value": "4-Layer FR-4 (50Ω Impedance Controlled)" },
     { "label": "POWER TREE", "value": "4V-14V input, 3.8V Buck, 3.3V LDO" }
   ],
+  "categories": ["Embedded", "PCB", "Firmware"],
   "techStack": ["STM32", "Altium Designer", "FreeRTOS", "CAN Bus", "LTE-CAT4", "C/C++"],
   "links": {
     "github": "https://github.com/sagar-koirala/atlas-telemetry-unit",

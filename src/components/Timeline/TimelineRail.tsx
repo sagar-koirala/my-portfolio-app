@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import portfolio from "@/data/portfolio.json";
 import TimelineCanvas from "./TimelineCanvas";
@@ -37,8 +37,51 @@ const getDynamicTargetRange = (yearStart: number, yearEnd: number): [number, num
   return [center - targetDuration / 2, center + targetDuration / 2];
 };
 
+const timelineData = portfolio.timeline as TimelineItem[];
+
+const parsedExperiencesStatic: ParsedExperience[] = timelineData.map((item) => {
+  const jsonType = item.type?.toLowerCase() || "";
+  const internalCategory = 
+    jsonType === "education" 
+      ? ("edu" as const)
+      : (jsonType === "part-time" || jsonType === "freelance" || jsonType === "internship")
+      ? ("part" as const)
+      : ("full" as const);
+
+  const yOffset = 42 + item.lane * 40;
+
+  return {
+    ...item,
+    internalCategory,
+    yOffset,
+  };
+});
+
+const getMinMaxYear = (exps: ParsedExperience[]) => {
+  if (exps.length === 0) {
+    return { minYear: 2021.0, maxYear: 2027.0 };
+  }
+  const starts = exps.map(e => e.yearStart);
+  const ends = exps.map(e => e.yearEnd);
+  const min = Math.min(...starts);
+  const max = Math.max(...ends);
+  return {
+    minYear: Math.floor(min) - 0.5,
+    maxYear: Math.ceil(max) + 0.5,
+  };
+};
+
+const { minYear: staticMinYear, maxYear: staticMaxYear } = getMinMaxYear(parsedExperiencesStatic);
+
+const clampCenterYearStatic = (center: number, duration: number, min: number, max: number) => {
+  const half = duration / 2;
+  const lowest = min + half;
+  const highest = max - half;
+  if (lowest > highest) return min + (max - min) / 2;
+  return Math.max(lowest, Math.min(highest, center));
+};
+
 export default function TimelineRail() {
-  const timelineData = portfolio.timeline as TimelineItem[];
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Track scroll progress of the entire chronology section
@@ -51,78 +94,37 @@ export default function TimelineRail() {
   const yCanvas = useSpring(useTransform(scrollYProgress, [0, 1], [-40, 40]), { stiffness: 45, damping: 22 });
   const yDetails = useSpring(useTransform(scrollYProgress, [0, 1], [-15, 15]), { stiffness: 45, damping: 22 });
 
-  const parsedExperiences = useMemo<ParsedExperience[]>(() => {
-    return timelineData.map((item) => {
-      // Map the JSON type string directly to internal category type
-      const jsonType = item.type?.toLowerCase() || "";
-      const internalCategory = 
-        jsonType === "education" 
-          ? ("edu" as const)
-          : (jsonType === "part-time" || jsonType === "freelance" || jsonType === "internship")
-          ? ("part" as const)
-          : ("full" as const);
-
-      const yOffset = 42 + item.lane * 40;
-
-      return {
-        ...item,
-        internalCategory,
-        yOffset,
-      };
-    });
-  }, [timelineData]);
-
-  // Compute dynamic track range from parsed experiences
-  const { minYear, maxYear } = useMemo(() => {
-    if (parsedExperiences.length === 0) {
-      return { minYear: 2021.0, maxYear: 2027.0 };
-    }
-    const starts = parsedExperiences.map(e => e.yearStart);
-    const ends = parsedExperiences.map(e => e.yearEnd);
-    const min = Math.min(...starts);
-    const max = Math.max(...ends);
-    // Add some padding to both ends of the track
-    return {
-      minYear: Math.floor(min) - 0.5,
-      maxYear: Math.ceil(max) + 0.5,
-    };
-  }, [parsedExperiences]);
+  const parsedExperiences = parsedExperiencesStatic;
+  const minYear = staticMinYear;
+  const maxYear = staticMaxYear;
 
   // --- State ---
-  const [activeExperienceId, setActiveExperienceId] = useState<string | null>(null);
-  const [viewportCenterYear, setViewportCenterYear] = useState<number>(2024.0);
-  const [zoomDuration, setZoomDuration] = useState<number>(4.0);
+  const firstExp = parsedExperiencesStatic[0];
+  const initialTargetRange = firstExp ? getDynamicTargetRange(firstExp.yearStart, firstExp.yearEnd) : [2022.0, 2026.0];
+  const initialDuration = initialTargetRange[1] - initialTargetRange[0];
+  const initialCenter = (initialTargetRange[0] + initialTargetRange[1]) / 2;
+  const initialClampedCenter = clampCenterYearStatic(initialCenter, initialDuration, staticMinYear, staticMaxYear);
+
+  const [activeExperienceId, setActiveExperienceId] = useState<string | null>(firstExp?.id || null);
+  const [viewportCenterYear, setViewportCenterYear] = useState<number>(initialClampedCenter);
+  const [zoomDuration, setZoomDuration] = useState<number>(initialDuration);
   const [shouldAnimate, setShouldAnimate] = useState(true);
 
   // Clamp function to keep viewport within timeline bounds
   const clampCenterYear = useCallback((center: number, duration: number) => {
     const half = duration / 2;
-    const lowest = minYear + half;
-    const highest = maxYear - half;
-    if (lowest > highest) return minYear + (maxYear - minYear) / 2;
+    const lowest = staticMinYear + half;
+    const highest = staticMaxYear - half;
+    if (lowest > highest) return staticMinYear + (staticMaxYear - staticMinYear) / 2;
     return Math.max(lowest, Math.min(highest, center));
-  }, [minYear, maxYear]);
-
-  // Initialize state once parsed experiences are ready
-  useEffect(() => {
-    if (parsedExperiences.length > 0 && !activeExperienceId) {
-      const firstExp = parsedExperiences[0];
-      setActiveExperienceId(firstExp.id);
-      
-      const [targetMin, targetMax] = getDynamicTargetRange(firstExp.yearStart, firstExp.yearEnd);
-      const targetDuration = targetMax - targetMin;
-      const targetCenter = (targetMin + targetMax) / 2;
-      setViewportCenterYear(clampCenterYear(targetCenter, targetDuration));
-      setZoomDuration(targetDuration);
-    }
-  }, [parsedExperiences, activeExperienceId, clampCenterYear]);
+  }, []);
 
   // Selection callback to snap viewport to the targeted experience
   const handleSelectId = useCallback((id: string | null) => {
     setShouldAnimate(true);
     setActiveExperienceId(id);
     if (id) {
-      const exp = parsedExperiences.find(e => e.id === id);
+      const exp = parsedExperiencesStatic.find(e => e.id === id);
       if (exp) {
         const [targetMin, targetMax] = getDynamicTargetRange(exp.yearStart, exp.yearEnd);
         const targetDuration = targetMax - targetMin;
@@ -131,7 +133,7 @@ export default function TimelineRail() {
         setZoomDuration(targetDuration);
       }
     }
-  }, [parsedExperiences, clampCenterYear]);
+  }, [clampCenterYear]);
 
   return (
     <section ref={containerRef} id="timeline" className="py-24 md:py-36 scroll-mt-20 overflow-hidden">
@@ -141,8 +143,11 @@ export default function TimelineRail() {
         </h2>
       </div>
 
-      {/* --- Visual Timeline Graph Track --- */}
-      <motion.div style={{ y: yCanvas }} className="will-change-transform">
+      {/* --- Visual Timeline Graph Track (Desktop only) --- */}
+      <motion.div
+        style={{ y: yCanvas }}
+        className="will-change-transform hidden md:block"
+      >
         <TimelineCanvas
           experiences={parsedExperiences}
           activeId={activeExperienceId}

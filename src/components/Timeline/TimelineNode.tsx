@@ -29,30 +29,40 @@ export default function TimelineNode({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       style={style}
+      initial={{
+        scale: 1.0,
+        borderColor: "var(--timeline-node-inactive-border)",
+        backgroundColor: "var(--timeline-node-bg)",
+        boxShadow: "0 0 0px rgba(0, 0, 0, 0)",
+      }}
       animate={{
         scale: isActive ? 1.15 : 1.0,
-        borderColor: isActive ? "rgba(255, 255, 255, 1)" : "rgba(163, 163, 163, 1)",
+        borderColor: isActive ? "var(--timeline-node-active-border)" : "var(--timeline-node-inactive-border)",
+        backgroundColor: "var(--timeline-node-bg)",
         boxShadow: isActive 
-          ? "0 0 15px rgba(255, 255, 255, 0.4)" 
+          ? "0 0 15px var(--timeline-node-shadow)" 
           : "0 0 0px rgba(0, 0, 0, 0)",
       }}
       whileHover={{
         scale: isActive ? 1.15 : 1.05,
-        borderColor: "rgba(255, 255, 255, 1)",
+        borderColor: "var(--timeline-node-active-border)",
+        backgroundColor: "var(--timeline-node-bg)",
       }}
       transition={{ type: "spring", stiffness: 110, damping: 20 }}
-      className="group select-none border-2 w-12 h-12 bg-white flex items-center justify-center cursor-pointer rounded-full relative z-10 focus:outline-none overflow-hidden"
+      className="group select-none border-2 w-12 h-12 flex items-center justify-center cursor-pointer rounded-full relative z-10 focus:outline-none overflow-hidden"
     >
       {logo ? (
-        <Image
-          src={logo}
-          alt={`${company} Logo`}
-          width={48}
-          height={48}
-          className="w-full h-full object-contain p-1.5 rounded-full"
-        />
+        <div className="w-full h-full bg-white flex items-center justify-center p-1.5">
+          <Image
+            src={logo}
+            alt={`${company} Logo`}
+            width={36}
+            height={36}
+            className="w-full h-full object-contain"
+          />
+        </div>
       ) : (
-        <Briefcase className="w-4 h-4 text-neutral-800" />
+        <Briefcase className="w-4 h-4" style={{ color: "var(--timeline-node-icon)" }} />
       )}
       
       {/* Tooltip for company name on hover */}

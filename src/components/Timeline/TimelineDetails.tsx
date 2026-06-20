@@ -63,15 +63,16 @@ export default function TimelineDetails({
   const [prevActiveId, setPrevActiveId] = useState<string | null>(activeId);
   const [slideDirection, setSlideDirection] = useState<number>(1);
 
-  useEffect(() => {
-    if (!activeId) return;
-    const prevIdx = experiences.findIndex((e) => e.id === prevActiveId);
-    const nextIdx = experiences.findIndex((e) => e.id === activeId);
-    if (prevIdx !== -1 && nextIdx !== -1 && prevIdx !== nextIdx) {
-      setSlideDirection(nextIdx > prevIdx ? 1 : -1);
+  if (activeId !== prevActiveId) {
+    if (activeId && prevActiveId) {
+      const prevIdx = experiences.findIndex((e) => e.id === prevActiveId);
+      const nextIdx = experiences.findIndex((e) => e.id === activeId);
+      if (prevIdx !== -1 && nextIdx !== -1 && prevIdx !== nextIdx) {
+        setSlideDirection(nextIdx > prevIdx ? 1 : -1);
+      }
     }
     setPrevActiveId(activeId);
-  }, [activeId, experiences, prevActiveId]);
+  }
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -106,14 +107,17 @@ export default function TimelineDetails({
                 opacity: isActive ? 1 : 0.6,
                 y: 0,
               }}
-              whileHover={{ y: isActive ? 0 : -2, opacity: 1 }}
+              whileHover={{ 
+                y: isActive ? 0 : -4, 
+                opacity: 1,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+              }}
               transition={{ type: "spring", stiffness: 75, damping: 19, restDelta: 0.01 }}
-              onMouseEnter={() => onSelectId(exp.id)}
               onClick={() => onSelectId(exp.id)}
-              className={`relative h-full border transition-colors duration-300 overflow-hidden cursor-pointer select-none rounded-xl shrink-0 ${
+              className={`relative h-full border transition-colors duration-300 overflow-hidden cursor-pointer select-none rounded-xl shrink-0 group ${
                 isActive 
                   ? "bg-neutral-100/60 dark:bg-neutral-900/60 border-neutral-300 dark:border-neutral-700" 
-                  : "border-neutral-200 dark:border-neutral-800 bg-neutral-50/40 dark:bg-neutral-950/40 hover:bg-neutral-100/20 dark:hover:bg-neutral-900/20 hover:border-neutral-300 dark:hover:border-neutral-700"
+                  : "border-neutral-200 dark:border-neutral-800 bg-neutral-50/40 dark:bg-neutral-950/40 hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 hover:border-neutral-400 dark:hover:border-neutral-600"
               }`}
             >
               <motion.div
@@ -133,10 +137,10 @@ export default function TimelineDetails({
                     alt={`${exp.company} Logo`}
                     width={40}
                     height={40}
-                    className="w-full h-full object-contain p-1 rounded-full"
+                    className="w-full h-full object-contain p-1 rounded-full group-hover:scale-108 transition-transform duration-200"
                   />
                 ) : (
-                  <Briefcase size={isActive ? 14 : 12} className="text-neutral-800" />
+                  <Briefcase size={isActive ? 14 : 12} className="text-neutral-800 group-hover:scale-108 transition-transform duration-200" />
                 )}
               </motion.div>
 
@@ -166,32 +170,42 @@ export default function TimelineDetails({
                   <div>
                     <div className="flex justify-between items-start">
                       <div className="flex-1 pr-4">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-                          {exp.type} Experience
+                        {/* Experience Type Label */}
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-500">
+                          {exp.type} EXPERIENCE
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black uppercase tracking-tight text-neutral-900 dark:text-neutral-100 mt-1.5 font-sans leading-tight">
+                        
+                        {/* Primary Role Title */}
+                        <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-neutral-900 dark:text-neutral-100 mt-1 font-sans leading-tight">
                           {exp.role}
                         </h3>
-                        <p className="text-xs font-mono uppercase tracking-wider text-neutral-600 dark:text-neutral-400 mt-1 leading-none">
-                          {exp.company}
-                        </p>
-
-                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-mono text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mt-3.5 border-y border-neutral-200 dark:border-neutral-800/60 py-2">
-                          <span>DATE: {exp.dateRange}</span>
-                          <span>•</span>
-                          <span>LOCATION: {exp.location}</span>
+                        
+                        {/* Stacked Sub-Header: Prevents horizontal wrapping issues on long company names */}
+                        <div className="mt-3 space-y-1.5">
+                          <p className="text-xs md:text-sm font-sans uppercase tracking-wider text-neutral-800 dark:text-neutral-200 font-extrabold leading-tight">
+                            {exp.company}
+                          </p>
+                          <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 dark:text-neutral-500 leading-none">
+                            {exp.location} <span className="text-neutral-200 dark:text-neutral-800 mx-1.5">•</span> {exp.dateRange}
+                          </p>
                         </div>
 
-                        <div className="mt-4 max-h-[170px] overflow-y-auto pr-2 space-y-2.5 custom-scrollbar">
+                        {/* Clean low-profile horizontal divider to anchor the content */}
+                        <div className="h-[1px] w-full bg-neutral-200/60 dark:bg-neutral-800/40 mt-5" />
+
+                        {/* Bullet List Container with balanced margins */}
+                        <div className="mt-5 max-h-[190px] overflow-y-auto pr-2 space-y-3.5 custom-scrollbar">
                           {exp.bullets.map((bullet, idx) => {
                             const parsed = parseBullet(bullet);
                             return (
-                              <div key={idx} className="flex gap-2 text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
-                                <span className="text-neutral-500 dark:text-neutral-500 mt-1.5 shrink-0 text-[8px]">▪</span>
+                              <div key={idx} className="flex gap-2.5 text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans">
+                                <span className="text-neutral-400 dark:text-neutral-600 mt-1.5 shrink-0 text-[8px]">▪</span>
                                 <p>
                                   {parsed ? (
                                     <>
-                                      <strong className="font-bold text-neutral-900 dark:text-neutral-100">{parsed.prefix}</strong>
+                                      <strong className="font-bold text-neutral-950 dark:text-neutral-50">
+                                        {parsed.prefix}
+                                      </strong>
                                       {parsed.hasColon ? ": " : " "}
                                       {parsed.text}
                                     </>

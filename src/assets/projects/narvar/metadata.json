@@ -10,6 +10,7 @@
     { "label": "IoT Broker", "value": "Adafruit IO (MQTT over TLS)" },
     { "label": "Smart Home", "value": "iOS Shortcuts & IFTTT Webhooks" }
   ],
+  "categories": ["Embedded", "Firmware", "Software"],
   "techStack": ["ESP32", "LVGL", "MQTT", "Adafruit IO", "iOS Shortcuts", "IFTTT"],
   "links": {
     "github": "https://github.com/sagar-koirala/Narvar_PhoneHolder_M5stackS3"

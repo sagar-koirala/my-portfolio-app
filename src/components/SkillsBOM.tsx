@@ -41,14 +41,17 @@ export default function SkillsBOM() {
 
   return (
     <section id="skills" className="py-24 md:py-36 scroll-mt-20 select-none">
-      <div className="mb-16 mx-auto max-w-7xl px-4 sm:px-8">
+      <div className="mb-12">
         <h2 className="text-4xl md:text-6xl font-bold font-sans uppercase tracking-tighter text-neutral-900 dark:text-white">
           Technical Inventory
         </h2>
       </div>
 
       {/* Stack of full-width horizontal rows separated by deep, minimalist cuts */}
-      <div className="flex flex-col border-t border-neutral-200 dark:border-neutral-800 mx-auto max-w-7xl px-4 sm:px-8">
+      <div 
+        onMouseLeave={() => setActiveTab(null)}
+        className="flex flex-col border-t border-neutral-200 dark:border-neutral-800"
+      >
         {categories.map((category, index) => {
           const isActive = activeTab === index;
           const skills = skillsInventory[category as keyof typeof skillsInventory] || [];

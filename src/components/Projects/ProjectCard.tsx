@@ -9,9 +9,11 @@ import { ProjectMetadata } from "@/data/projects";
 interface ProjectCardProps {
   project: ProjectMetadata;
   onClick: () => void;
+  /** When true, renders compact mobile layout inside the grid */
+  gridVariant?: boolean;
 }
 
-export default function ProjectCard({ project, onClick }: ProjectCardProps) {
+export default function ProjectCard({ project, onClick, gridVariant = false }: ProjectCardProps) {
   const isFlagship = project.priority === "flagship";
   const [hovered, setHovered] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -26,7 +28,9 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
 
   // Mount tracking to prevent SSR issues with Portals
   useEffect(() => {
-    setMounted(true);
+    requestAnimationFrame(() => {
+      setMounted(true);
+    });
     return () => {
       if (cueTimerRef.current) {
         clearTimeout(cueTimerRef.current);
@@ -156,6 +160,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
               muted
               loop
               playsInline
+              poster={project.thumbnail.src}
               className="object-cover w-full h-full group-hover:scale-[1.01] transition-transform duration-500"
             />
           ) : project.images && project.images.length > 1 ? (
@@ -222,7 +227,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
               {project.techStack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-2.5 py-1 text-[9px] font-mono tracking-wider uppercase bg-neutral-100 dark:bg-neutral-800/30 text-neutral-700 dark:text-neutral-300 border-0 rounded"
+                  className="px-2.5 py-0.5 text-[9px] font-mono tracking-wider uppercase bg-neutral-100/50 dark:bg-neutral-800/30 text-neutral-600 dark:text-neutral-400 border border-neutral-200/60 dark:border-neutral-800/50 rounded-full"
                 >
                   {tech}
                 </span>
@@ -242,72 +247,169 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
     );
   }
 
-  // Standard Card - Sized correctly on mobile (w-[270px]) and desktop (md:w-[420px]) with shrink-0
+  // ── Shared thumbnail block ──────────────────────────────────────────────
+  const thumbnailBlock = (
+    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900/40 border border-neutral-200/60 dark:border-neutral-800/40">
+      {videoSrc ? (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          muted
+          loop
+          playsInline
+          poster={project.thumbnail.src}
+          className="object-cover w-full h-full group-hover:scale-[1.01] transition-transform duration-500"
+        />
+      ) : project.images && project.images.length > 1 ? (
+        <div className="w-full h-full relative overflow-hidden">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={imageIndex}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{
+                type: "spring",
+                stiffness: 180,
+                damping: 24,
+                mass: 0.8,
+              }}
+              className="absolute inset-0 w-full h-full"
+            >
+              <Image
+                src={project.images[imageIndex]}
+                alt={`${project.title} slide ${imageIndex + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover w-full h-full"
+                placeholder="blur"
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      ) : (
+        <Image
+          src={project.thumbnail}
+          alt={project.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover w-full h-full group-hover:scale-[1.02] transition-transform duration-500"
+          placeholder="blur"
+        />
+      )}
+    </div>
+  );
+
+  // ── Mobile compact card (used inside grid on small screens) ─────────────
+  if (gridVariant) {
+    return (
+      <motion.div
+        onClick={onClick}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+        className="w-full h-full rounded-xl bg-neutral-50/30 dark:bg-neutral-900/30 hover:bg-neutral-100/65 dark:hover:bg-neutral-900/65 border border-neutral-200/80 dark:border-neutral-800/80 backdrop-blur-md overflow-hidden cursor-pointer shadow-lg select-none transition-colors duration-200 group flex flex-col"
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-neutral-200/10 dark:from-neutral-900/10 via-transparent to-black/[0.005] dark:to-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+        {/* Thumbnail */}
+        <div className="relative aspect-video w-full overflow-hidden bg-neutral-100 dark:bg-neutral-900/40">
+          {videoSrc ? (
+            <video
+              ref={videoRef}
+              src={videoSrc}
+              muted
+              loop
+              playsInline
+              poster={project.thumbnail.src}
+              className="object-cover w-full h-full group-hover:scale-[1.01] transition-transform duration-500"
+            />
+          ) : project.images && project.images.length > 1 ? (
+            <div className="w-full h-full relative overflow-hidden">
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key={imageIndex}
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "-100%" }}
+                  transition={{ type: "spring", stiffness: 180, damping: 24, mass: 0.8 }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image
+                    src={project.images[imageIndex]}
+                    alt={`${project.title} slide ${imageIndex + 1}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover w-full h-full"
+                    placeholder="blur"
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Image
+              src={project.thumbnail}
+              alt={project.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover w-full h-full group-hover:scale-[1.02] transition-transform duration-500"
+              placeholder="blur"
+            />
+          )}
+        </div>
+
+        {/* Content — compact on mobile, fuller on desktop */}
+        <div className="p-4 md:p-5 flex flex-col gap-2 md:gap-3 flex-grow">
+          <h3 className="text-sm md:text-base font-black font-sans uppercase tracking-tight text-neutral-900 dark:text-white group-hover:text-black dark:group-hover:text-neutral-100 transition-colors leading-tight line-clamp-2">
+            {project.title}
+          </h3>
+
+          {/* Short tagline — mobile only shows a clipped version */}
+          <p className="text-[11px] md:text-xs text-neutral-500 dark:text-neutral-400 leading-snug line-clamp-2 font-sans">
+            {project.tagline}
+          </p>
+
+          {/* 3 tags */}
+          <div className="flex flex-wrap gap-1.5 mt-auto pt-1">
+            {project.techStack.slice(0, 3).map((tech) => (
+              <span
+                key={tech}
+                className="px-2 py-0.5 text-[8px] font-mono tracking-wider uppercase bg-neutral-100/50 dark:bg-neutral-800/40 text-neutral-500 dark:text-neutral-400 border border-neutral-200/60 dark:border-neutral-800/50 rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+            {project.techStack.length > 3 && (
+              <span className="text-[8px] font-mono text-neutral-400 self-center pl-0.5">
+                +{project.techStack.length - 3}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {renderTooltipPortal()}
+      </motion.div>
+    );
+  }
+
+  // ── Standard Card (carousel / non-grid legacy) ──────────────────────────
   return (
     <motion.div
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
-      whileHover={{ 
-        y: -4
-      }}
+      whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeInOut" }}
-      className="shrink-0 w-[270px] md:w-[420px] rounded-xl bg-neutral-50/30 dark:bg-neutral-900/30 hover:bg-neutral-100/65 dark:hover:bg-neutral-900/65 border border-neutral-200/80 dark:border-neutral-800/80 backdrop-blur-md p-4 sm:p-6 flex flex-col gap-4 sm:gap-5 relative group overflow-hidden cursor-pointer shadow-lg select-none transition-colors duration-200"
+      className="shrink-0 w-[270px] md:w-[420px] h-full rounded-xl bg-neutral-50/30 dark:bg-neutral-900/30 hover:bg-neutral-100/65 dark:hover:bg-neutral-900/65 border border-neutral-200/80 dark:border-neutral-800/80 backdrop-blur-md p-4 sm:p-6 flex flex-col gap-4 sm:gap-5 relative group overflow-hidden cursor-pointer shadow-lg select-none transition-colors duration-200"
     >
       <div className="absolute inset-0 bg-gradient-to-tr from-neutral-200/10 dark:from-neutral-900/10 via-transparent to-black/[0.005] dark:to-white/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      {/* Thumbnail / Video / Slideshow */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900/40 border border-neutral-200/60 dark:border-neutral-800/40">
-        {videoSrc ? (
-          <video
-            ref={videoRef}
-            src={videoSrc}
-            muted
-            loop
-            playsInline
-            className="object-cover w-full h-full group-hover:scale-[1.01] transition-transform duration-500"
-          />
-        ) : project.images && project.images.length > 1 ? (
-          <div className="w-full h-full relative overflow-hidden">
-            <AnimatePresence initial={false}>
-              <motion.div
-                key={imageIndex}
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{
-                  type: "spring",
-                  stiffness: 180,
-                  damping: 24,
-                  mass: 0.8
-                }}
-                className="absolute inset-0 w-full h-full"
-              >
-                <Image
-                  src={project.images[imageIndex]}
-                  alt={`${project.title} slide ${imageIndex + 1}`}
-                  fill
-                  sizes="(max-w-768px) 270px, 420px"
-                  className="object-cover w-full h-full"
-                  placeholder="blur"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        ) : (
-          <Image
-            src={project.thumbnail}
-            alt={project.title}
-            fill
-            sizes="(max-w-768px) 270px, 420px"
-            className="object-cover w-full h-full group-hover:scale-[1.02] transition-transform duration-500"
-            placeholder="blur"
-          />
-        )}
-      </div>
+      {thumbnailBlock}
 
-       {/* Content */}
+      {/* Content */}
       <div className="flex flex-col justify-between flex-grow gap-4 sm:gap-5">
         <div className="space-y-1.5">
           <h3 className="text-sm sm:text-xl font-black font-sans uppercase tracking-tight text-neutral-900 dark:text-white group-hover:text-black dark:group-hover:text-neutral-100 transition-colors line-clamp-2 leading-tight">
@@ -320,7 +422,7 @@ export default function ProjectCard({ project, onClick }: ProjectCardProps) {
           {project.techStack.slice(0, 3).map((tech) => (
             <span
               key={tech}
-              className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 text-[8.5px] font-mono tracking-wider uppercase bg-neutral-100 dark:bg-neutral-800/30 text-neutral-700 dark:text-neutral-300 border-0 rounded"
+              className="px-2 py-0.5 text-[8.5px] font-mono tracking-wider uppercase bg-neutral-100/50 dark:bg-neutral-800/30 text-neutral-600 dark:text-neutral-400 border border-neutral-200/60 dark:border-neutral-800/50 rounded-full"
             >
               {tech}
             </span>

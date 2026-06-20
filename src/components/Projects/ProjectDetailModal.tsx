@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, ComponentPropsWithoutRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProjectMetadata } from "@/data/projects";
+import dynamic from "next/dynamic";
+import remarkGfm from "remark-gfm";
+
+const ReactMarkdown = dynamic(() => import("react-markdown"), {
+  loading: () => <div className="animate-pulse py-4 font-mono text-xs text-neutral-400">Loading description...</div>
+});
 
 const Github = ({ size = 13, className = "" }: { size?: number; className?: string }) => (
   <svg
@@ -60,22 +66,7 @@ const LinkIcon = ({ size = 13, className = "" }: { size?: number; className?: st
   </svg>
 );
 
-const ChevronLeft = ({ size = 16 }: { size?: number }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.5"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="drop-shadow-none dark:drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
-  >
-    <path d="m15 18-6-6 6-6" />
-  </svg>
-);
+
 
 const ChevronRight = ({ size = 16 }: { size?: number }) => (
   <svg
@@ -243,6 +234,138 @@ function ModalCarouselCard({ project, onClick }: ModalCarouselCardProps) {
   );
 }
 
+const markdownComponents = {
+  // Override headers
+  h2: ({ children }: ComponentPropsWithoutRef<"h2">) => (
+    <h3 className="text-lg sm:text-xl font-bold font-mono tracking-tight uppercase text-neutral-900 dark:text-white mt-7 mb-3 border-b border-neutral-200 dark:border-neutral-800 pb-2">
+      {children}
+    </h3>
+  ),
+  h3: ({ children }: ComponentPropsWithoutRef<"h3">) => (
+    <h4 className="text-base sm:text-lg font-bold font-mono tracking-tight uppercase text-neutral-800 dark:text-neutral-200 mt-5 mb-2.5 border-b border-neutral-200 dark:border-neutral-800 pb-1">
+      {children}
+    </h4>
+  ),
+  // Override lists
+  ul: ({ children }: ComponentPropsWithoutRef<"ul">) => (
+    <ul className="list-disc list-outside mb-4 pl-5 text-sm text-neutral-600 dark:text-neutral-400 space-y-1.5 font-sans">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }: ComponentPropsWithoutRef<"ol">) => (
+    <ol className="list-decimal list-outside mb-4 pl-5 text-sm text-neutral-600 dark:text-neutral-400 space-y-1.5 font-sans">
+      {children}
+    </ol>
+  ),
+  li: ({ children }: ComponentPropsWithoutRef<"li">) => (
+    <li className="text-sm leading-relaxed pl-0.5">
+      {children}
+    </li>
+  ),
+  // Override paragraphs
+  p: ({ children }: ComponentPropsWithoutRef<"p">) => (
+    <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans mb-4">
+      {children}
+    </p>
+  ),
+  // Override bold
+  strong: ({ children }: ComponentPropsWithoutRef<"strong">) => (
+    <strong className="font-bold text-neutral-800 dark:text-neutral-200">
+      {children}
+    </strong>
+  ),
+  // Override pre and code blocks
+  pre: ({ children }: ComponentPropsWithoutRef<"pre">) => (
+    <pre className="my-4 p-4 rounded-lg bg-neutral-900 dark:bg-neutral-950 border border-neutral-800 overflow-x-auto text-neutral-300">
+      {children}
+    </pre>
+  ),
+  code: ({ className, children, ...props }: ComponentPropsWithoutRef<"code">) => {
+    const isBlock = className || (typeof children === 'string' && children.includes('\n'));
+    return isBlock ? (
+      <code className="font-mono text-xs text-neutral-300" {...props}>
+        {children}
+      </code>
+    ) : (
+      <code className="font-mono text-[10px] bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-300 px-1.5 py-0.5 rounded" {...props}>
+        {children}
+      </code>
+    );
+  },
+  // Override media (Images / Videos)
+  img: ({ src, alt }: ComponentPropsWithoutRef<"img">) => {
+    if (!src || typeof src !== "string") return null;
+    const videoExtensions = [".mp4", ".webm", ".ogg", ".mov"];
+    const isVideo = videoExtensions.some(ext => src.toLowerCase().endsWith(ext));
+
+    if (isVideo) {
+      return (
+        <span className="block my-6 w-full">
+          <video
+            src={src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
+            className="w-full h-auto rounded-lg border border-neutral-200 dark:border-neutral-800/80 bg-neutral-50 dark:bg-[#121212]/50 object-contain shadow-sm"
+          />
+          {alt && (
+            <span className="block mt-2 text-center text-xs font-mono text-neutral-400 dark:text-neutral-500">
+              {alt}
+            </span>
+          )}
+        </span>
+      );
+    }
+
+    return (
+      <span className="block my-6 w-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          className="w-full h-auto rounded-lg border border-neutral-200 dark:border-neutral-800/80 bg-neutral-50 dark:bg-[#121212]/50 object-contain shadow-sm"
+          loading="lazy"
+        />
+      </span>
+    );
+  },
+  // Override Tables
+  table: ({ children }: ComponentPropsWithoutRef<"table">) => (
+    <div className="my-6 w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-neutral-800">
+      <table className="min-w-full divide-y divide-neutral-200 dark:divide-neutral-800 text-left text-sm">
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ children }: ComponentPropsWithoutRef<"thead">) => (
+    <thead className="bg-neutral-50 dark:bg-neutral-900/50">
+      {children}
+    </thead>
+  ),
+  tbody: ({ children }: ComponentPropsWithoutRef<"tbody">) => (
+    <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800 bg-white dark:bg-[#121212]">
+      {children}
+    </tbody>
+  ),
+  tr: ({ children }: ComponentPropsWithoutRef<"tr">) => (
+    <tr className="divide-x divide-neutral-200 dark:divide-neutral-800">
+      {children}
+    </tr>
+  ),
+  th: ({ children }: ComponentPropsWithoutRef<"th">) => (
+    <th className="px-4 py-3 font-mono text-xs font-semibold uppercase text-neutral-700 dark:text-neutral-300">
+      {children}
+    </th>
+  ),
+  td: ({ children }: ComponentPropsWithoutRef<"td">) => (
+    <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400 font-sans">
+      {children}
+    </td>
+  ),
+};
+
 interface ProjectDetailModalProps {
   isOpen: boolean;
   project: ProjectMetadata | null;
@@ -266,6 +389,12 @@ export default function ProjectDetailModal({
   const rightContentRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const lastScrollTopRef = useRef(0);
+  const prevSlugRef = useRef<string | undefined>(undefined);
+
+  if (project?.slug !== prevSlugRef.current) {
+    setShowHeader(true);
+    prevSlugRef.current = project?.slug;
+  }
 
   const otherProjects = project ? allProjects.filter((p) => p.slug !== project.slug) : [];
 
@@ -288,7 +417,6 @@ export default function ProjectDetailModal({
     if (carouselRef.current) {
       carouselRef.current.scrollTop = 0;
     }
-    setShowHeader(true);
     lastScrollTopRef.current = 0;
   }, [project?.slug]);
 
@@ -424,7 +552,7 @@ export default function ProjectDetailModal({
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="bg-neutral-100 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800/80 text-neutral-700 dark:text-neutral-400 text-[10px] px-2.5 py-1.5 rounded-md font-mono uppercase tracking-wider"
+                className="bg-neutral-100/50 dark:bg-neutral-800/30 border border-neutral-200/60 dark:border-neutral-800/50 text-neutral-600 dark:text-neutral-400 text-[10px] px-3 py-1 rounded-full font-mono uppercase tracking-wider"
               >
                 {tech}
               </span>
@@ -463,79 +591,7 @@ export default function ProjectDetailModal({
     );
   };
 
-  const parseBoldText = (text: string) => {
-    const parts = text.split(/(\*\*.*?\*\*|`.*?`)/);
-    return parts.map((part, i) => {
-      if (part.startsWith("**") && part.endsWith("**")) {
-        return (
-          <strong key={i} className="font-bold text-neutral-800 dark:text-neutral-200">
-            {part.slice(2, -2)}
-          </strong>
-        );
-      }
-      if (part.startsWith("`") && part.endsWith("`")) {
-        return (
-          <code
-            key={i}
-            className="font-mono text-[10px] bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-300 px-1.5 py-0.5 rounded"
-          >
-            {part.slice(1, -1)}
-          </code>
-        );
-      }
-      return part;
-    });
-  };
 
-  const renderDescription = (text: string) => {
-    return text.split("\n").map((line, index) => {
-      const trimmed = line.trim();
-      if (!trimmed) return <div key={index} className="h-3" />;
-
-      if (trimmed.startsWith("###")) {
-        return (
-          <h4
-            key={index}
-            className="text-base sm:text-lg font-bold font-mono tracking-tight uppercase text-neutral-800 dark:text-neutral-200 mt-5 mb-2.5 border-b border-neutral-200 dark:border-neutral-800 pb-1"
-          >
-            {trimmed.replace("###", "").trim()}
-          </h4>
-        );
-      }
-
-      if (trimmed.startsWith("##")) {
-        return (
-          <h3
-            key={index}
-            className="text-lg sm:text-xl font-bold font-mono tracking-tight uppercase text-neutral-900 dark:text-white mt-7 mb-3 border-b border-neutral-200 dark:border-neutral-800 pb-2"
-          >
-            {trimmed.replace("##", "").trim()}
-          </h3>
-        );
-      }
-
-      if (trimmed.startsWith("*") || trimmed.startsWith("-")) {
-        const content = trimmed.substring(1).trim();
-        return (
-          <li
-            key={index}
-            className="text-sm text-neutral-600 dark:text-neutral-400 font-sans list-disc list-inside mb-2 pl-1.5"
-          >
-            {parseBoldText(content)}
-          </li>
-        );
-      }
-
-      return (
-        <p
-          key={index}
-          className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed font-sans mb-4"
-        >
-          {parseBoldText(trimmed)}
-        </p>
-      );
-    });
-  };
 
   return (
     <AnimatePresence>
@@ -548,7 +604,7 @@ export default function ProjectDetailModal({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/[0.22] dark:bg-white/[0.22] backdrop-blur-sm cursor-pointer z-0"
+            className="fixed inset-0 bg-black/40 dark:bg-black/70 backdrop-blur-sm cursor-pointer z-0"
           />
 
           {/* The Floating Card Shell (Bleeds to full screen on mobile, fits console box on desktop) */}
@@ -657,7 +713,9 @@ export default function ProjectDetailModal({
                   transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
                   className="prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300 font-sans leading-relaxed text-sm sm:text-base"
                 >
-                  {renderDescription(project.description)}
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                    {project.description}
+                  </ReactMarkdown>
                 </motion.div>
 
                 {/* System Visuals List with Reveal Rise Animation */}
@@ -676,6 +734,10 @@ export default function ProjectDetailModal({
                       <div key={`vid-${i}`} className="w-full">
                         <video
                           src={vid}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
                           controls
                           className="w-full h-auto rounded-lg border border-neutral-200 dark:border-neutral-800/80 bg-neutral-50 dark:bg-[#121212]/50 object-contain"
                         />

@@ -39,6 +39,13 @@ const getBezierPath = (startX: number, startY: number, endX: number, endY: numbe
   return `M ${startX} ${startY} L ${turnX} ${startY} Q ${endX} ${startY}, ${endX} ${curveEndY} L ${endX} ${endY}`;
 };
 
+// Spring configuration: slightly more damped for organic heavy physics
+const springConfig = {
+  type: "spring" as const,
+  stiffness: 85,
+  damping: 22,
+};
+
 export default function TimelineCanvas({
   experiences,
   activeId,
@@ -69,12 +76,7 @@ export default function TimelineCanvas({
     };
   }, [currentCenterYear, currentZoomDuration]);
 
-  // Spring configuration: slightly more damped for organic heavy physics
-  const springConfig = {
-    type: "spring" as const,
-    stiffness: 85,
-    damping: 22,
-  };
+
 
   useEffect(() => {
     if (shouldAnimate) {
@@ -318,7 +320,7 @@ export default function TimelineCanvas({
             >
               <motion.span 
                 animate={{
-                  color: showMonths ? "#ffffff" : "#d4d4d4",
+                  color: showMonths ? "var(--timeline-text-active)" : "var(--timeline-text-inactive)",
                   fontWeight: showMonths ? 800 : 700
                 }}
                 transition={{ duration: 0.3 }}
@@ -345,7 +347,10 @@ export default function TimelineCanvas({
                 transform: `translateX(-50%) translateY(-50%) scale(${warped.scale})`,
               }}
             >
-              <span className="font-mono text-[8px] font-bold text-neutral-400 tracking-wider select-none">
+              <span 
+                className="font-mono text-[8px] font-bold tracking-wider select-none"
+                style={{ color: "var(--timeline-text-inactive)" }}
+              >
                 {months[m]}
               </span>
             </motion.div>
@@ -368,10 +373,11 @@ export default function TimelineCanvas({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
-      className="hidden md:block w-full h-[240px] bg-transparent relative select-none overflow-hidden cursor-grab active:cursor-grabbing"
+      className="w-full h-[180px] md:h-[240px] bg-transparent relative select-none overflow-hidden cursor-grab active:cursor-grabbing"
       style={{
         perspective: "1000px",
-        transformStyle: "preserve-3d"
+        transformStyle: "preserve-3d",
+        touchAction: "pan-y"
       }}
     >
       {/* Blurred Ends Overlays dynamically matched to page background */}
@@ -407,45 +413,25 @@ export default function TimelineCanvas({
                 x2="0%"
                 y2="100%"
               >
-                {/* Starts from the matching color of the timeline rail and gradually reaches bright white */}
-                <stop offset="0%" stopColor="rgba(39, 39, 42, 0.8)" />
-                <stop offset="100%" stopColor="rgba(255, 255, 255, 1)" />
+                {/* Starts from the matching color of the timeline rail and gradually reaches active wire color */}
+                <stop offset="0%" stopColor="var(--timeline-rail-active)" />
+                <stop offset="100%" stopColor="var(--timeline-wire-active)" />
               </linearGradient>
             ))}
           </defs>
-
+ 
           {/* Background Curved Timeline Rail (Track) */}
           <path
             d={getRailPath()}
             fill="none"
-            stroke={activeId ? "rgba(39, 39, 42, 0.8)" : "rgba(24, 24, 27, 0.6)"}
+            stroke={activeId ? "var(--timeline-rail-active)" : "var(--timeline-rail-inactive)"}
             strokeWidth={14}
             className="transition-colors duration-300"
           />
-
-
+ 
+ 
           {connectionPaths.map((wire) => {
-            const activeColor = "rgba(255, 255, 255, 1)";
-            const steelColor = "rgba(180, 180, 195, 0.7)";
-            
-            // Highlight color transitions smoothly
-            const strokeColor = wire.isActive
-              ? activeColor
-              : wire.isAnyActive
-              ? "rgba(100, 100, 110, 0.25)"
-              : steelColor;
-            
-            // Highlight width transitions smoothly
-            const strokeWidth = wire.isActive ? 2.5 : 1.5;
-            
             const dashArray = wire.type === "part" ? "6, 4" : undefined;
-            
-            // Pin highlight transitions smoothly
-            const circleColor = wire.isActive
-              ? activeColor
-              : wire.isAnyActive
-              ? "rgba(100, 100, 110, 0.4)"
-              : "rgba(180, 180, 195, 0.9)";
 
             return (
               <g key={`wire-${wire.id}`} className="transition-all duration-300" style={{ opacity: wire.warpedNode.opacity }}>
@@ -453,9 +439,9 @@ export default function TimelineCanvas({
                 <motion.path
                   d={wire.pathLeft}
                   fill="none"
-                  strokeWidth={1.5}
+                  initial={{ stroke: "var(--timeline-wire-inactive)", strokeWidth: 1.5 }}
                   animate={{
-                    stroke: wire.isAnyActive ? "rgba(100, 100, 110, 0.25)" : "rgba(180, 180, 195, 0.7)",
+                    stroke: wire.isAnyActive ? "var(--timeline-wire-any-active)" : "var(--timeline-wire-inactive)",
                     strokeWidth: 1.5,
                   }}
                   transition={springConfig}
@@ -466,7 +452,7 @@ export default function TimelineCanvas({
                   d={wire.pathLeft}
                   fill="none"
                   stroke={`url(#grad-${wire.id})`}
-                  strokeWidth={2.5}
+                  initial={{ opacity: 0, strokeWidth: 1.5 }}
                   animate={{
                     opacity: wire.isActive ? 1 : 0,
                     strokeWidth: wire.isActive ? 2.5 : 1.5,
@@ -474,14 +460,14 @@ export default function TimelineCanvas({
                   transition={springConfig}
                   strokeDasharray={dashArray}
                 />
-
+ 
                 {/* Right Wire - Base Track */}
                 <motion.path
                   d={wire.pathRight}
                   fill="none"
-                  strokeWidth={1.5}
+                  initial={{ stroke: "var(--timeline-wire-inactive)", strokeWidth: 1.5 }}
                   animate={{
-                    stroke: wire.isAnyActive ? "rgba(100, 100, 110, 0.25)" : "rgba(180, 180, 195, 0.7)",
+                    stroke: wire.isAnyActive ? "var(--timeline-wire-any-active)" : "var(--timeline-wire-inactive)",
                     strokeWidth: 1.5,
                   }}
                   transition={springConfig}
@@ -492,7 +478,7 @@ export default function TimelineCanvas({
                   d={wire.pathRight}
                   fill="none"
                   stroke={`url(#grad-${wire.id})`}
-                  strokeWidth={2.5}
+                  initial={{ opacity: 0, strokeWidth: 1.5 }}
                   animate={{
                     opacity: wire.isActive ? 1 : 0,
                     strokeWidth: wire.isActive ? 2.5 : 1.5,
@@ -500,24 +486,24 @@ export default function TimelineCanvas({
                   transition={springConfig}
                   strokeDasharray={dashArray}
                 />
-
+ 
                 <motion.circle
                   cx={wire.warpedLeftAnchor.x}
                   cy={wire.warpedLeftAnchor.y}
-                  r={8}
+                  initial={{ r: 8, fill: "var(--timeline-rail-inactive)" }}
                   animate={{
                     r: (wire.isActive ? 9.5 : 8) * wire.warpedLeftAnchor.scale,
-                    fill: activeId ? "rgba(39, 39, 42, 0.8)" : "rgba(24, 24, 27, 0.6)",
+                    fill: activeId ? "var(--timeline-rail-active)" : "var(--timeline-rail-inactive)",
                   }}
                   transition={springConfig}
                 />
                 <motion.circle
                   cx={wire.warpedRightAnchor.x}
                   cy={wire.warpedRightAnchor.y}
-                  r={8}
+                  initial={{ r: 8, fill: "var(--timeline-rail-inactive)" }}
                   animate={{
                     r: (wire.isActive ? 9.5 : 8) * wire.warpedRightAnchor.scale,
-                    fill: activeId ? "rgba(39, 39, 42, 0.8)" : "rgba(24, 24, 27, 0.6)",
+                    fill: activeId ? "var(--timeline-rail-active)" : "var(--timeline-rail-inactive)",
                   }}
                   transition={springConfig}
                 />

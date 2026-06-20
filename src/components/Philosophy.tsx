@@ -59,9 +59,11 @@ export default function Philosophy() {
       className="w-full relative py-12 overflow-hidden"
     >
       {/* Huge Consistent Typographic Header */}
-      <h2 className="text-4xl md:text-6xl font-bold font-sans uppercase tracking-tighter text-neutral-900 dark:text-white mb-16">
-        ENGINEERING BELIEFS
-      </h2>
+      <div className="mb-12">
+        <h2 className="text-4xl md:text-6xl font-bold font-sans uppercase tracking-tighter text-neutral-900 dark:text-white">
+          Engineering Beliefs
+        </h2>
+      </div>
 
       {/* Asymmetric Stark Stacking Layout with Testimonials-matched Gaps */}
       <div className="w-full flex flex-col space-y-16 md:space-y-24 overflow-hidden py-12">

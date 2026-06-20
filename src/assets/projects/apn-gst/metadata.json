@@ -10,6 +10,7 @@
     { "label": "Enclosure", "value": "IP67 Weatherproof" },
     { "label": "Research Scope", "value": "Himalayan Glacial Telemetry" }
   ],
+  "categories": ["Embedded", "Firmware"],
   "techStack": ["LoRa", "RF Link Budget", "GSM Telemetry", "Antenna Design", "Embedded C"],
   "links": {
     "github": "https://github.com/sagar-koirala"

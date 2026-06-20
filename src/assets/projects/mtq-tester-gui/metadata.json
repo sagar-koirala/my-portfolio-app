@@ -11,6 +11,7 @@
     { "label": "CALIBRATION", "value": "2-DoF Azimuth-Elevation Platform" },
     { "label": "TEST GUI", "value": "Python / Tkinter (Real-time serial plotting)" }
   ],
+  "categories": ["Embedded", "PCB", "Firmware", "Robotics", "Software"],
   "techStack": ["STM32", "Altium Designer", "C/C++", "Python", "Motor Control", "Tkinter"],
   "links": {
     "github": "https://github.com/sagar-koirala/mtq-tester"

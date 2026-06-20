@@ -12,10 +12,10 @@ export default function Home() {
     <main className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-12 min-w-0">
       <div className="space-y-24 w-full">
         <Hero />
-        <Philosophy />
-        <TimelineRail />
         <ProjectDeck />
         <SkillsBOM />
+        <TimelineRail />
+        <Philosophy />
         <Testimonials />
       </div>
       <div className="mt-8">

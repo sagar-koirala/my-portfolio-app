@@ -11,6 +11,7 @@
     { "label": "DECODING", "value": "RTP H.264 Video stream parsing" },
     { "label": "RTOS ENVIRONMENT", "value": "FreeRTOS Tasks (Core-pinned)" }
   ],
+  "categories": ["Embedded", "Firmware", "Software"],
   "techStack": ["C++", "ESP32", "UDP Network", "H.264", "FreeRTOS", "Arduino Core"],
   "links": {
     "github": "https://github.com/sagar-koirala/TelloESP32"

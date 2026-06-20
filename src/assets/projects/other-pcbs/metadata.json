@@ -10,6 +10,7 @@
     { "label": "Power Tree Design", "value": "Buck / LDO Regulators" },
     { "label": "Signal Integrity", "value": "Impedance Control & GND Planes" }
   ],
+  "categories": ["PCB"],
   "techStack": ["Altium Designer", "KiCad", "Schematic Capture", "Board Bring-up", "Power Trees"],
   "links": {
     "github": "https://github.com/sagar-koirala"

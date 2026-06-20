@@ -5,7 +5,7 @@ export default function Footer() {
   const { ctaText, email, phone, socials, logistics } = portfolio.footer;
 
   return (
-    <footer className="pt-10 pb-12 max-w-7xl mx-auto px-4 sm:px-8 border-t border-neutral-200 dark:border-neutral-800">
+    <footer className="pt-10 pb-12 border-t border-neutral-200 dark:border-neutral-800">
       {/* 1-column layout stack on mobile/tablet, strict 12-column grid split on desktop, bottom-aligned on lg */}
       <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-16 items-start lg:items-end">
         

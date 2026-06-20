@@ -10,6 +10,7 @@
     { "label": "CAD Suite", "value": "Altium Designer" },
     { "label": "Focus Area", "value": "Power Distribution Network (PDN)" }
   ],
+  "categories": ["PCB"],
   "techStack": ["Altium Designer", "HDI PCB Layout", "Mixed-Signal Partitioning", "PDN Design", "Hardware Reverse-Engineering"],
   "links": {
     "github": "https://github.com/sagar-koirala/M5Stack-CORE2-PCB-RE"

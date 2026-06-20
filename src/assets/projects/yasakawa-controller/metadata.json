@@ -10,6 +10,7 @@
     { "label": "Simulation API", "value": "CoppeliaSim Remote API (Python)" },
     { "label": "User Console", "value": "Tkinter Multi-threaded GUI" }
   ],
+  "categories": ["Robotics", "Software"],
   "techStack": ["Python", "Robotics Kinematics", "SciPy", "CoppeliaSim", "Tkinter", "DH Parameters"],
   "links": {
     "github": "https://github.com/sagar-koirala/YaskawaGP8_Controller"

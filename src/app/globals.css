@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #1f1f1f;
+  --nav-bg: rgba(243, 244, 246, 0.45);
+  --nav-bg-scrolled: rgba(243, 244, 246, 0.75);
+  --nav-border: rgba(0, 0, 0, 0.03);
+  --nav-border-scrolled: rgba(0, 0, 0, 0.05);
+  --timeline-rail-active: rgba(220, 220, 225, 0.9);
+  --timeline-rail-inactive: rgba(240, 240, 245, 0.8);
+  --timeline-wire-active: rgba(31, 31, 31, 1);
+  --timeline-wire-inactive: rgba(120, 120, 130, 0.65);
+  --timeline-wire-any-active: rgba(200, 200, 205, 0.35);
+  --timeline-text-active: #1f1f1f;
+  --timeline-text-inactive: #737373;
+  --timeline-node-bg: #ffffff;
+  --timeline-node-active-border: #1f1f1f;
+  --timeline-node-inactive-border: #d4d4d4;
+  --timeline-node-shadow: rgba(0, 0, 0, 0.08);
+  --timeline-node-icon: #1f1f1f;
 }
 
 @theme inline {
@@ -12,17 +30,66 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark theme — applied when .dark class is set (manual toggle) */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --nav-bg: rgba(18, 18, 20, 0.45);
+  --nav-bg-scrolled: rgba(18, 18, 20, 0.75);
+  --nav-border: rgba(255, 255, 255, 0.03);
+  --nav-border-scrolled: rgba(255, 255, 255, 0.06);
+  --timeline-rail-active: rgba(63, 63, 70, 0.85);
+  --timeline-rail-inactive: rgba(39, 39, 42, 0.65);
+  --timeline-wire-active: rgba(255, 255, 255, 1);
+  --timeline-wire-inactive: rgba(180, 180, 195, 0.7);
+  --timeline-wire-any-active: rgba(100, 100, 110, 0.25);
+  --timeline-text-active: #ffffff;
+  --timeline-text-inactive: #a3a3a3;
+  --timeline-node-bg: #121212;
+  --timeline-node-active-border: #ffffff;
+  --timeline-node-inactive-border: #3f3f46;
+  --timeline-node-shadow: rgba(255, 255, 255, 0.2);
+  --timeline-node-icon: #ededed;
+}
+
+/* System dark preference — when no manual override is set, inherit .dark values */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):not(.dark) {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --nav-bg: rgba(18, 18, 20, 0.45);
+    --nav-bg-scrolled: rgba(18, 18, 20, 0.75);
+    --nav-border: rgba(255, 255, 255, 0.03);
+    --nav-border-scrolled: rgba(255, 255, 255, 0.06);
+    --timeline-rail-active: rgba(63, 63, 70, 0.85);
+    --timeline-rail-inactive: rgba(39, 39, 42, 0.65);
+    --timeline-wire-active: rgba(255, 255, 255, 1);
+    --timeline-wire-inactive: rgba(180, 180, 195, 0.7);
+    --timeline-wire-any-active: rgba(100, 100, 110, 0.25);
+    --timeline-text-active: #ffffff;
+    --timeline-text-inactive: #a3a3a3;
+    --timeline-node-bg: #121212;
+    --timeline-node-active-border: #ffffff;
+    --timeline-node-inactive-border: #3f3f46;
+    --timeline-node-shadow: rgba(255, 255, 255, 0.2);
+    --timeline-node-icon: #ededed;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Global theme-switch transition — applied temporarily via JS */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: color 400ms ease, background-color 400ms ease,
+    border-color 400ms ease, fill 400ms ease, stroke 400ms ease,
+    box-shadow 400ms ease, outline-color 400ms ease !important;
 }
 
 /* --- Timeline Physics Styling --- */

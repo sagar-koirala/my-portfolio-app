@@ -23,7 +23,7 @@ export default function Testimonials() {
 
   return (
     <section id="testimonials" className="py-24 md:py-36 scroll-mt-20">
-      <div className="mb-16">
+      <div className="mb-12">
         <h2 className="text-4xl md:text-6xl font-bold font-sans uppercase tracking-tighter text-neutral-900 dark:text-white">
           Client Endorsements
         </h2>
@@ -44,7 +44,7 @@ export default function Testimonials() {
               &ldquo;{testimonials[0].text}&rdquo;
             </blockquote>
             <div className="text-xs uppercase font-mono tracking-widest text-neutral-400 dark:text-neutral-500">
-              — {testimonials[0].title} // {testimonials[0].platform}
+              — {testimonials[0].title} {" // "} {testimonials[0].platform}
             </div>
           </motion.div>
         )}
@@ -78,7 +78,7 @@ export default function Testimonials() {
               &ldquo;{testimonials[1].text}&rdquo;
             </blockquote>
             <div className="text-xs uppercase font-mono tracking-widest text-neutral-400 dark:text-neutral-500">
-              — {testimonials[1].title} // {testimonials[1].platform}
+              — {testimonials[1].title} {" // "} {testimonials[1].platform}
             </div>
           </motion.div>
         )}

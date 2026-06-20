@@ -1,64 +1,102 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import portfolio from "@/data/portfolio.json";
 import profilePic from "@/assets/profile.png";
 
 export default function Hero() {
   const { name, title, overview } = portfolio.profile;
+  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = React.useState(false);
 
-  // Ref and motion values for 3D card tilt
-  const containerRef = useRef<HTMLDivElement>(null);
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Mouse parallax offset (tracks the entire page pointer position relative to chip center)
-  const parallaxX = useSpring(useTransform(mouseX, [-1000, 1000], [-24, 24]), {
-    stiffness: 150,
-    damping: 22,
-  });
-  const parallaxY = useSpring(useTransform(mouseY, [-600, 600], [-24, 24]), {
-    stiffness: 150,
-    damping: 22,
-  });
-
-  // Scale the parallax transforms based on depth (Top layer gets full, Middle gets 50%)
-  const midParallaxX = useTransform(parallaxX, (v) => v * 0.5);
-  const midParallaxY = useTransform(parallaxY, (v) => v * 0.5);
-
-  // Listen to mousemove events on the window to track pointer position across the entire page
-  useEffect(() => {
-    const handleWindowMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
-
-      // Calculate cursor coordinates relative to the QFP chip center
-      const xVal = e.clientX - (rect.left + width / 2);
-      const yVal = e.clientY - (rect.top + height / 2);
-
-      mouseX.set(xVal);
-      mouseY.set(yVal);
-    };
-
-    window.addEventListener("mousemove", handleWindowMouseMove);
-    return () => window.removeEventListener("mousemove", handleWindowMouseMove);
-  }, [mouseX, mouseY]);
-
-  // 8 pins per side for the QFP Package
-  const pinCount = 8;
-  const pinsArray = Array.from({ length: pinCount });
+  // Grounded, factual professional metrics
+  const metrics = [
+    {
+      value: "3.83 / 4.0",
+      label: "B.Eng GPA",
+      subtitle: "1st Class Honours",
+    },
+    {
+      value: "4+",
+      label: "Engineering Roles",
+      subtitle: "Space & Embedded",
+    },
+    {
+      value: "5.0 ⭐",
+      label: "Upwork Client Rating",
+      subtitle: "100% Job Success",
+    },
+  ];
 
   return (
     <section
       id="hero"
-      className="grid grid-cols-1 gap-12 lg:grid-cols-12 items-center pt-2 pb-24 md:pt-4 md:pb-36"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative grid grid-cols-1 gap-12 lg:grid-cols-12 items-center pt-8 pb-24 md:pt-12 md:pb-36 overflow-hidden min-h-[90vh]"
     >
-      {/* Column A: Typography & Actions */}
+      {/* ========================================================
+          GLOBAL AMBIENT GRID BACKGROUND (z-0)
+         ======================================================== */}
+      <div 
+        className="absolute inset-0 -z-10 pointer-events-none select-none overflow-hidden opacity-40 dark:opacity-60"
+        style={{
+          maskImage: "radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%)",
+        }}
+      >
+        {/* Dynamic interactive ambient hover glow */}
+        {isHovered && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
+            style={{
+              background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.12), transparent 80%)`,
+            }}
+          />
+        )}
+        
+        {/* Base static dot grid */}
+        <div 
+          className="absolute inset-0 bg-[radial-gradient(#e5e5e5_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#262626_1.5px,transparent_1.5px)] [background-size:24px_24px]" 
+        />
+
+        {/* Dynamic interactive highlighted grid dots forming a "hill" around the cursor */}
+        <div 
+          className="absolute inset-0 bg-[radial-gradient(#10b981_1.8px,transparent_1.8px)] [background-size:24px_24px] transition-opacity duration-300 ease-out" 
+          style={{
+            maskImage: `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`,
+            opacity: isHovered ? 0.75 : 0,
+          }}
+        />
+      </div>
+
+      {/* CSS Animation Keyframes Injector */}
+      <style jsx global>{`
+        @keyframes pcb-pulse-route {
+          0% {
+            stroke-dashoffset: 600;
+          }
+          100% {
+            stroke-dashoffset: -600;
+          }
+        }
+      `}</style>
+
+      {/* ========================================================
+          COLUMN A: TYPOGRAPHY, ACTIONS, & METRICS
+         ======================================================== */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -68,9 +106,9 @@ export default function Hero() {
           damping: 20,
           delay: 0.15,
         }}
-        className="lg:col-span-7 space-y-8 z-10"
+        className="lg:col-span-7 space-y-8 z-10 flex flex-col items-center lg:items-start"
       >
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-3 items-center lg:items-start text-center lg:text-left">
           {/* Aligned, Prominent Intro Header */}
           <p className="text-xl md:text-2xl font-bold uppercase tracking-tighter text-neutral-500 dark:text-neutral-400 font-sans leading-none">
             Hi, I&apos;m
@@ -86,222 +124,211 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Description Body */}
-        <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xl font-sans">
+        {/* Clean Description Body */}
+        <p className="text-base md:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xl font-sans text-center lg:text-left">
           {overview}
         </p>
 
         {/* Action Layout Buttons */}
-        <div className="flex flex-wrap gap-4 pt-4">
+        <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
           <a
             href="#projects"
-            className="px-6 py-3 rounded-none bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-mono text-xs uppercase tracking-wider font-semibold border border-neutral-900 dark:border-white hover:bg-transparent hover:text-neutral-900 dark:hover:bg-transparent dark:hover:text-white transition-colors duration-200 shadow-sm"
+            className="px-6 py-3 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-mono text-xs uppercase tracking-wider font-semibold border border-neutral-900 dark:border-white hover:bg-transparent hover:text-neutral-900 dark:hover:bg-transparent dark:hover:text-white transition-colors duration-200 shadow-sm"
           >
             View System Builds
           </a>
           <a
             href="/Sagar_Resume.pdf"
             download="Sagar_Resume.pdf"
-            className="px-6 py-3 rounded-none border border-neutral-200 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white text-neutral-800 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-mono text-xs uppercase tracking-wider font-semibold transition-colors duration-200"
+            className="px-6 py-3 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:border-neutral-900 dark:hover:border-white hover:bg-neutral-50 dark:hover:bg-neutral-800/40 text-neutral-800 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-200"
           >
             Download CV
           </a>
         </div>
+
+        {/* Factual Metrics Grid with Entrance Delay */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            delay: 0.35,
+          }}
+          className="grid grid-cols-3 gap-4 sm:gap-10 pt-8 border-t border-neutral-200 dark:border-neutral-800/80 w-full max-w-2xl text-center lg:text-left bg-transparent"
+        >
+          {metrics.map((metric, i) => (
+            <div key={i} className="space-y-3">
+              <p className="text-2xl sm:text-4xl font-black font-sans tracking-tighter text-neutral-900 dark:text-white leading-none">
+                {metric.value}
+              </p>
+              <div className="space-y-1.5">
+                <p className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-bold leading-tight">
+                  {metric.label}
+                </p>
+                <p className="text-[10px] sm:text-[11px] font-mono text-neutral-400 dark:text-neutral-500 leading-none">
+                  {metric.subtitle}
+                </p>
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
 
-      {/* Column B: Static QFP Package with 3D Exploded Image Stack */}
+      {/* ========================================================
+          COLUMN B: PORTRAIT FRAME & INTEGRATED TRACK SYSTEM
+         ======================================================== */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{
           type: "spring",
           stiffness: 100,
           damping: 20,
           delay: 0.3,
         }}
-        className="lg:col-span-5 flex justify-center items-center py-8"
+        className="lg:col-span-5 flex justify-center items-center py-8 z-10"
       >
-        <div
-          ref={containerRef}
-          className="relative w-80 h-80 md:w-[420px] md:h-[420px] flex items-center justify-center select-none"
-        >
-          {/* ========================================================
-              STATIC PCB FOOTPRINT BACKGROUND ELEMENTS (z-0)
-             ======================================================== */}
-
-          {/* Silkscreen outline frame */}
-          <div className="absolute w-[298px] h-[298px] md:w-[376px] md:h-[376px] border border-neutral-300/10 dark:border-neutral-800/30 rounded-sm pointer-events-none z-0" />
-
-          {/* Pin-1 orientation notch marker circle right above the footprint frame corner */}
-          <div className="absolute top-[8px] left-[8px] md:top-[14px] md:left-[14px] w-3.5 h-3.5 md:w-4 md:h-4 rounded-full bg-neutral-400 flex items-center justify-center font-mono text-[8px] md:text-[10px] text-neutral-950 font-bold z-0 pointer-events-none shadow-sm">
-            1
-          </div>
-
-          {/* TOP FOOTPRINT (SMT PADS & TRACES) */}
-          <div className="absolute top-0 left-[28px] right-[28px] md:left-[45px] md:right-[45px] flex justify-between px-2 z-0 pointer-events-none">
-            {pinsArray.map((_, i) => (
-              <div key={`top-fp-${i}`} className="flex flex-col items-center relative">
-                <div className="w-[1px] h-4 md:h-6 bg-neutral-300/20 dark:bg-neutral-800/40" />
-                <div className="w-1.5 h-3 md:w-2 md:h-5 bg-neutral-300 dark:bg-neutral-700 shadow-sm" />
-              </div>
-            ))}
-          </div>
-
-          {/* BOTTOM FOOTPRINT (SMT PADS & TRACES) */}
-          <div className="absolute bottom-0 left-[28px] right-[28px] md:left-[45px] md:right-[45px] flex justify-between px-2 z-0 pointer-events-none">
-            {pinsArray.map((_, i) => (
-              <div key={`bottom-fp-${i}`} className="flex flex-col items-center justify-end relative">
-                <div className="w-1.5 h-3 md:w-2 md:h-5 bg-neutral-300 dark:bg-neutral-700 shadow-sm" />
-                <div className="w-[1px] h-4 md:h-6 bg-neutral-300/20 dark:bg-neutral-800/40" />
-              </div>
-            ))}
-          </div>
-
-          {/* LEFT FOOTPRINT (SMT PADS & TRACES) */}
-          <div className="absolute left-0 top-[28px] bottom-[28px] md:top-[45px] md:bottom-[45px] flex flex-col justify-between py-2 z-0 pointer-events-none">
-            {pinsArray.map((_, i) => (
-              <div key={`left-fp-${i}`} className="flex items-center relative">
-                <div className="h-[1px] w-4 md:w-6 bg-neutral-300/20 dark:bg-neutral-800/40" />
-                <div className="h-1.5 w-3 md:h-2 md:w-5 bg-neutral-300 dark:bg-neutral-700 shadow-sm" />
-              </div>
-            ))}
-          </div>
-
-          {/* RIGHT FOOTPRINT (SMT PADS & TRACES) */}
-          <div className="absolute right-0 top-[28px] bottom-[28px] md:top-[45px] md:bottom-[45px] flex flex-col justify-between py-2 z-0 pointer-events-none">
-            {pinsArray.map((_, i) => (
-              <div key={`right-fp-${i}`} className="flex items-center justify-end relative">
-                <div className="h-1.5 w-3 md:h-2 md:w-5 bg-neutral-300 dark:bg-neutral-700 shadow-sm" />
-                <div className="h-[1px] w-4 md:w-6 bg-neutral-300/20 dark:bg-neutral-800/40" />
-              </div>
-            ))}
-          </div>
-
-          {/* ========================================================
-              STATIC PROCESSOR CHIP BODY (z-10)
-             ======================================================== */}
-          <div className="w-72 h-72 md:w-[360px] md:h-[360px] bg-gradient-to-br from-neutral-900 to-neutral-950 border border-neutral-800 rounded-sm shadow-2xl relative flex items-center justify-center p-6 z-10">
-            {/* TOP PINS */}
-            <div className="absolute top-[-14px] md:top-[-28px] left-[12px] right-[12px] md:left-[16px] md:right-[16px] flex justify-between px-2 z-20 pointer-events-none">
-              {pinsArray.map((_, i) => (
-                <div
-                  key={`top-${i}`}
-                  className="w-1.5 h-4 md:w-2 md:h-8 bg-gradient-to-b from-neutral-500 via-neutral-365 to-neutral-400 rounded-sm shadow-md shadow-black/50"
-                />
-              ))}
-            </div>
-
-            {/* BOTTOM PINS */}
-            <div className="absolute bottom-[-14px] md:bottom-[-28px] left-[12px] right-[12px] md:left-[16px] md:right-[16px] flex justify-between px-2 z-20 pointer-events-none">
-              {pinsArray.map((_, i) => (
-                <div
-                  key={`bottom-${i}`}
-                  className="w-1.5 h-4 md:w-2 md:h-8 bg-gradient-to-t from-neutral-500 via-neutral-365 to-neutral-400 rounded-sm shadow-md shadow-black/50"
-                />
-              ))}
-            </div>
-
-            {/* LEFT PINS */}
-            <div className="absolute left-[-14px] md:left-[-28px] top-[12px] bottom-[12px] md:top-[16px] md:bottom-[16px] flex flex-col justify-between py-2 z-20 pointer-events-none">
-              {pinsArray.map((_, i) => (
-                <div
-                  key={`left-${i}`}
-                  className="h-1.5 w-4 md:h-2 md:w-8 bg-gradient-to-r from-neutral-500 via-neutral-365 to-neutral-400 rounded-sm shadow-md shadow-black/50"
-                />
-              ))}
-            </div>
-
-            {/* RIGHT PINS */}
-            <div className="absolute right-[-14px] md:right-[-28px] top-[12px] bottom-[12px] md:top-[16px] md:bottom-[16px] flex flex-col justify-between py-2 z-20 pointer-events-none">
-              {pinsArray.map((_, i) => (
-                <div
-                  key={`right-${i}`}
-                  className="h-1.5 w-4 md:h-2 md:w-8 bg-gradient-to-l from-neutral-500 via-neutral-365 to-neutral-400 rounded-sm shadow-md shadow-black/50"
-                />
-              ))}
-            </div>
-
-            {/* Silicon Die Bevel edge */}
-            <div className="absolute inset-2 border border-neutral-800 rounded-sm pointer-events-none opacity-90" />
-
-            {/* Simulated chip marker engraving */}
-            <div className="absolute bottom-4 right-4 font-mono text-[9px] text-neutral-600 tracking-wider">
-              AM-QFP144-STM32
-            </div>
-
-            {/* 3D Floating Image Stack */}
-            <div
-              className="relative w-full h-full rounded overflow-visible pointer-events-none"
-              style={{ transformStyle: "preserve-3d" }}
+        {/* Relative layout boundaries lock SVG coordinates to card dimensions */}
+        <div className="relative py-8 flex justify-center items-center">
+          
+          {/* Absolute PCB Canvas (Always centered perfectly behind the card) */}
+          <div className="absolute inset-0 w-[500px] h-[700px] left-1/2 -translate-x-1/2 -top-12 pointer-events-none -z-10 select-none overflow-visible">
+            <svg 
+              className="w-full h-full stroke-neutral-200 dark:stroke-neutral-800/60 fill-none stroke-[2.5]"
+              viewBox="0 0 500 700"
             >
-              {/* Layer 1: Base Image (No Parallax) */}
-              <div
-                className="absolute inset-0 rounded overflow-hidden bg-neutral-950 shadow-lg"
-                style={{ scale: 1.15 }}
+              {/* Top Vias (6 Pads for the 6 Navbar Menu Options) */}
+              <circle cx="75" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="145" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="215" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="285" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="355" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="425" cy="16" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+
+              {/* Bottom Vias (Start/End points for downward traces) */}
+              <circle cx="110" cy="684" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="250" cy="684" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+              <circle cx="390" cy="684" r="4.5" className="stroke-emerald-500/80 dark:stroke-emerald-500/60 fill-white dark:fill-[#0a0a0a]" />
+
+              {/* Upward Traces (Emerging from top of the card to the 6 via locations) */}
+              <path d="M 190,280 L 190,135 L 75,20" />
+              <path d="M 214,280 L 214,89 L 145,20" />
+              <path d="M 238,280 L 238,43 L 215,20" />
+              <path d="M 262,280 L 262,43 L 285,20" />
+              <path d="M 286,280 L 286,89 L 355,20" />
+              <path d="M 310,280 L 310,135 L 425,20" />
+
+              {/* Downward Traces (Emerging from bottom of the card) */}
+              <path d="M 160,420 L 160,460 L 110,510 L 110,680" />
+              <path d="M 250,420 L 250,680" />
+              <path d="M 340,420 L 340,460 L 390,510 L 390,680" />
+
+              {/* Upward Data Pulse Overlays */}
+              <path
+                d="M 190,280 L 190,135 L 75,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="40 240"
+                style={{ animation: "pcb-pulse-route 14s linear infinite" }}
+              />
+              <path
+                d="M 214,280 L 214,89 L 145,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="30 200"
+                style={{ animation: "pcb-pulse-route 11s linear infinite reverse" }}
+              />
+              <path
+                d="M 238,280 L 238,43 L 215,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="45 220"
+                style={{ animation: "pcb-pulse-route 16s linear infinite" }}
+              />
+              <path
+                d="M 262,280 L 262,43 L 285,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="45 220"
+                style={{ animation: "pcb-pulse-route 16s linear infinite reverse" }}
+              />
+              <path
+                d="M 286,280 L 286,89 L 355,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="30 200"
+                style={{ animation: "pcb-pulse-route 11s linear infinite" }}
+              />
+              <path
+                d="M 310,280 L 310,135 L 425,20"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="40 240"
+                style={{ animation: "pcb-pulse-route 14s linear infinite reverse" }}
+              />
+
+              {/* Downward Data Pulse Overlays */}
+              <path
+                d="M 160,420 L 160,460 L 110,510 L 110,680"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="40 240"
+                style={{ animation: "pcb-pulse-route 14s linear infinite" }}
+              />
+              <path
+                d="M 250,420 L 250,680"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="30 200"
+                style={{ animation: "pcb-pulse-route 11s linear infinite reverse" }}
+              />
+              <path
+                d="M 340,420 L 340,460 L 390,510 L 390,680"
+                className="stroke-emerald-500/40 dark:stroke-emerald-500/30"
+                strokeWidth="2.5"
+                strokeDasharray="40 240"
+                style={{ animation: "pcb-pulse-route 16s linear infinite" }}
+              />
+            </svg>
+          </div>
+
+          {/* Profile Card Container */}
+          <motion.div
+            whileHover={{ y: -6 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="w-72 sm:w-80 md:w-[320px] p-4 bg-white dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800/80 rounded-2xl shadow-lg dark:shadow-2xl backdrop-blur-md transition-shadow duration-300 hover:shadow-xl dark:hover:shadow-neutral-950/50 relative z-10"
+          >
+            {/* Portrait Image Frame */}
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-950 border border-neutral-200/50 dark:border-neutral-800/50">
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="w-full h-full relative"
               >
                 <Image
                   src={profilePic}
-                  alt="Base PCB Blueprint Layer"
+                  alt="Sagar Koirala Portrait"
                   fill
-                  sizes="(max-width: 768px) 288px, 360px"
-                  className="object-cover opacity-70"
+                  sizes="(max-width: 768px) 240px, 300px"
+                  className="object-cover"
                   priority
                 />
-              </div>
-
-              {/* Layer 2: Middle Image (Parallax on nested motion.div) */}
-              <div
-                className="absolute inset-0 rounded overflow-hidden shadow-xl shadow-black/40"
-                style={{ scale: 1.12 }}
-              >
-                <motion.div
-                  style={{
-                    x: midParallaxX,
-                    y: midParallaxY,
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <Image
-                    src={profilePic}
-                    alt="Middle Solder Layer"
-                    fill
-                    sizes="(max-width: 768px) 288px, 360px"
-                    className="object-cover"
-                    priority
-                  />
-                </motion.div>
-              </div>
-
-              {/* Layer 3: Top Image (Parallax on nested motion.div) */}
-              <div
-                className="absolute inset-0 rounded overflow-hidden shadow-2xl shadow-black/95"
-                style={{ scale: 1.07 }}
-              >
-                <motion.div
-                  style={{
-                    x: parallaxX,
-                    y: parallaxY,
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <Image
-                    src={profilePic}
-                    alt="Top Finished Assembly Layer"
-                    fill
-                    sizes="(max-width: 768px) 288px, 360px"
-                    className="object-cover"
-                    priority
-                  />
-                  {/* Subtle digital lens scanning overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent animate-[pulse_3s_infinite] pointer-events-none" />
-                </motion.div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+
+            {/* Caption at the bottom */}
+            <div className="mt-4 pt-3 border-t border-neutral-100 dark:border-neutral-800/80 flex items-baseline justify-between">
+              <span className="font-mono text-[10px] sm:text-xs text-neutral-800 dark:text-neutral-200 tracking-wider font-bold uppercase">
+                Systems &amp; Firmware
+              </span>
+              <span className="font-mono text-[10px] text-neutral-500 dark:text-neutral-400">
+                {portfolio.profile.location}
+              </span>
+            </div>
+          </motion.div>
+
         </div>
       </motion.div>
     </section>
