@@ -44,7 +44,7 @@ export default function Hero() {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative grid grid-cols-1 gap-12 lg:grid-cols-12 items-center pt-8 pb-24 md:pt-12 md:pb-36 overflow-hidden min-h-[90vh]"
+      className="relative grid grid-cols-1 gap-12 lg:grid-cols-12 items-center pt-2 pb-16 md:pt-4 md:pb-24 overflow-hidden min-h-[75vh]"
     >
       {/* ========================================================
           GLOBAL AMBIENT GRID BACKGROUND (z-0)

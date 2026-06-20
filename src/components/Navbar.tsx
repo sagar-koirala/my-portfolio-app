@@ -107,7 +107,9 @@ export default function Navbar() {
           borderColor: "var(--nav-border)",
         }}
         animate={{
-          width: isScrolled ? (isMobile ? "48px" : "540px") : "100%",
+          width: isScrolled
+            ? (isMobile ? "48px" : "540px")
+            : (isMobile ? "100%" : "calc(100% - 136px)"),
           maxWidth: isScrolled ? (isMobile ? "48px" : "540px") : "1280px",
           borderRadius: isScrolled ? "28px" : "20px",
           y: isScrolled ? 8 : 4,
@@ -130,16 +132,16 @@ export default function Navbar() {
         {/* Left Side: Profile Icon & Name / Status */}
         <motion.div
           initial={{
-            width: 180,
+            width: 160,
             opacity: 1,
             scale: 1,
-            marginRight: 16,
+            marginRight: 12,
           }}
           animate={{
-            width: isScrolled ? 0 : 180,
+            width: isScrolled ? 0 : 160,
             opacity: isScrolled ? 0 : 1,
             scale: isScrolled ? 0.8 : 1,
-            marginRight: isScrolled ? 0 : 16,
+            marginRight: isScrolled ? 0 : 12,
           }}
           transition={{
             type: "tween",
@@ -166,14 +168,14 @@ export default function Navbar() {
         </motion.div>
 
         {/* Center/Right Side: Nav Links */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-0.5 lg:gap-1.5">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className={`relative px-3 py-1.5 font-mono text-[11px] md:text-xs uppercase tracking-wider transition-colors duration-200 ${
+                className={`relative px-2 lg:px-3 py-1.5 font-mono text-[11px] md:text-xs uppercase tracking-wider transition-colors duration-200 ${
                   isActive
                     ? "text-neutral-900 dark:text-white font-bold"
                     : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"

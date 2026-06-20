@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="w-full max-w-7xl mx-auto px-4 sm:px-8 py-12 min-w-0">
+    <main className="w-full max-w-7xl mx-auto px-4 sm:px-8 pt-4 md:pt-6 pb-12 min-w-0">
       <div className="space-y-24 w-full">
         <Hero />
         <ProjectDeck />
