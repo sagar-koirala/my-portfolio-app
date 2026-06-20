@@ -178,6 +178,21 @@ function ModalCarouselCard({ project, onClick }: ModalCarouselCardProps) {
     };
   }, [hovered, project.images]);
 
+  const preloadImages = project.images && project.images.length > 1 ? (
+    <div className="absolute w-0 h-0 opacity-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {project.images.map((img, idx) => (
+        <Image
+          key={idx}
+          src={img}
+          alt="Preload"
+          fill
+          sizes="(max-w-640px) 256px, 320px"
+          loading="eager"
+        />
+      ))}
+    </div>
+  ) : null;
+
   return (
     <button
       onClick={onClick}
@@ -230,6 +245,7 @@ function ModalCarouselCard({ project, onClick }: ModalCarouselCardProps) {
       <p className="mt-1 text-[10px] sm:text-[11px] text-neutral-600 dark:text-neutral-500 line-clamp-2 leading-relaxed font-sans">
         {project.tagline}
       </p>
+      {preloadImages}
     </button>
   );
 }

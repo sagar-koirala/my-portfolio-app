@@ -136,6 +136,25 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
     );
   };
 
+  const preloadImages = project.images && project.images.length > 1 ? (
+    <div className="absolute w-0 h-0 opacity-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {project.images.map((img, idx) => (
+        <Image
+          key={idx}
+          src={img}
+          alt="Preload"
+          fill
+          sizes={
+            isFlagship
+              ? "(max-w-1024px) 100vw, 50vw"
+              : "(max-w-768px) 100vw, (max-w-1024px) 50vw, 33vw"
+          }
+          loading="eager"
+        />
+      ))}
+    </div>
+  ) : null;
+
   if (isFlagship) {
     return (
       <motion.div
@@ -243,6 +262,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
         </div>
 
         {renderTooltipPortal()}
+        {preloadImages}
       </motion.div>
     );
   }
@@ -390,6 +410,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
         </div>
 
         {renderTooltipPortal()}
+        {preloadImages}
       </motion.div>
     );
   }
@@ -436,6 +457,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
       </div>
 
       {renderTooltipPortal()}
+      {preloadImages}
     </motion.div>
   );
 }
