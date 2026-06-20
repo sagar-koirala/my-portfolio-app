@@ -105,7 +105,7 @@ function MobileFilterDropdown({
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2 px-4 py-2 rounded-full font-mono text-[10px] tracking-widest uppercase border border-neutral-200 dark:border-neutral-800 bg-transparent text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-200 cursor-pointer"
       >
-        <span>{active !== "All" ? `Filter: ${active}` : "Filter ▼"}</span>
+        <span>Filter: {active}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}

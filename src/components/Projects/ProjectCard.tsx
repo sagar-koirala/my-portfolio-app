@@ -77,6 +77,11 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
   }, [hovered, project.images]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Disable hover tooltip on touchscreen devices
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+      return;
+    }
+
     setClientMousePos({
       x: e.clientX,
       y: e.clientY,
@@ -90,6 +95,14 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
     cueTimerRef.current = setTimeout(() => {
       setShowCue(true);
     }, 1000); // 1 second static hover
+  };
+
+  const handleCardClick = () => {
+    setShowCue(false);
+    if (cueTimerRef.current) {
+      clearTimeout(cueTimerRef.current);
+    }
+    onClick();
   };
 
   const handleMouseEnter = () => {
@@ -158,7 +171,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
   if (isFlagship) {
     return (
       <motion.div
-        onClick={onClick}
+        onClick={handleCardClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
@@ -324,7 +337,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
   if (gridVariant) {
     return (
       <motion.div
-        onClick={onClick}
+        onClick={handleCardClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
@@ -418,7 +431,7 @@ export default function ProjectCard({ project, onClick, gridVariant = false }: P
   // ── Standard Card (carousel / non-grid legacy) ──────────────────────────
   return (
     <motion.div
-      onClick={onClick}
+      onClick={handleCardClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
